@@ -6,8 +6,16 @@ import {FullPost} from "./Pages/FullPost";
 import {AddPost} from "./Pages/AddPost/AddPost";
 import {Login} from "./Pages/Login/Login";
 import {Registration} from "./Pages/Registration/Registration";
+import {fetchAuthMe, selectIsAuth} from "./redux/slices/auth";
+import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
 
 function App() {
+    const dispatch = useDispatch()
+    const isAuth = useSelector(selectIsAuth)
+    useEffect(() => {
+        dispatch(fetchAuthMe())
+    }, [])
     return (
         <>
             <Header/>

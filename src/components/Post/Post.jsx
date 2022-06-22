@@ -11,7 +11,7 @@ import clsx from "clsx";
 
 export const Post = ({
                          _id, title, isFullPost, isEditable, imageUrl, tags, children, viewsCount,
-                         commentsCount, isLoading
+                         commentsCount, isLoading, user, createdAt
                      }) => {
     if (isLoading) {
         return <PostSkeleton />
@@ -38,7 +38,7 @@ export const Post = ({
             src={imageUrl} alt={title}/>
         )}
         <div className={styles.wrapper}>
-            <UserInfo />
+            <UserInfo {...user} additionalText={createdAt}/>
             <div className={styles.indention}>
                 <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
                     {isFullPost ? title : <Link to={`/posts/${_id}`}>{title}</Link>}
