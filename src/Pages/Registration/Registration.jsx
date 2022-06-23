@@ -3,6 +3,7 @@ import {Avatar, Paper, TextField, Typography, Button} from "@mui/material"
 import {useDispatch, useSelector} from "react-redux";
 import {fetchRegister, selectIsAuth} from "../../redux/slices/auth";
 import {useForm} from "react-hook-form";
+import {Navigate} from "react-router-dom";
 
 export const Registration = () => {
     const isAuth = useSelector(selectIsAuth)
@@ -24,6 +25,10 @@ export const Registration = () => {
         if ('token' in data.payload) {
             window.localStorage.setItem('token', data.payload.token)
         }
+    }
+
+    if (isAuth) {
+        return <Navigate to='/'/>
     }
 
     return <Paper classes={{root: styles.root}}>
