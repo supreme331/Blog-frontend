@@ -4,6 +4,7 @@ import {Index} from "../components/AddComment/AddComment"
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "../axios"
+import ReactMarkdown from "react-markdown";
 
 export const FullPost = () => {
     const [data, setData] = useState()
@@ -27,7 +28,7 @@ export const FullPost = () => {
         <Post
             _id={data._id}
             title={data.title}
-            imageUrl={data.imageUrl}
+            imageUrl={data.imageUrl ? `http://localhost:4444${data.imageUrl}` : ''}
             user={data.user}
             createdAt={data.createdAt}
             viewsCount={data.viewsCount}
@@ -35,7 +36,7 @@ export const FullPost = () => {
             tags={data.tags}
             isFullPost
         >
-            <p>{data.text}</p>
+            <ReactMarkdown children={data.text}/>
         </Post>
         <CommentsBlock
             items={[

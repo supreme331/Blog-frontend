@@ -8,16 +8,21 @@ import {Link} from "react-router-dom"
 import {PostSkeleton} from './Skeleton'
 import {UserInfo} from "../UserInfo/UserInfo"
 import clsx from "clsx";
+import {useDispatch} from "react-redux";
+import {fetchRemovePost} from "../../redux/slices/posts";
 
 export const Post = ({
                          _id, title, isFullPost, isEditable, imageUrl, tags, children, viewsCount,
                          commentsCount, isLoading, user, createdAt
                      }) => {
+    const dispatch = useDispatch()
     if (isLoading) {
         return <PostSkeleton />
     }
     const onRemove = () => {
-
+        if(window.confirm('Вы действительно хотите удалить статью?')) {
+            dispatch(fetchRemovePost(_id))
+        }
     }
     return <div className={clsx(styles.root, {[styles.rootFull]: isFullPost})}>
         {
