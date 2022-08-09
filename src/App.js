@@ -9,15 +9,22 @@ import {Registration} from "./Pages/Registration/Registration";
 import {fetchAuthMe, selectIsAuth} from "./redux/slices/auth";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {fetchComments} from "./redux/slices/comments";
+import axios from "./axios";
+import {useState} from "react";
+import {fetchUsers} from "./redux/slices/users";
 
 function App() {
     const dispatch = useDispatch()
     const isAuth = useSelector(selectIsAuth)
+
     useEffect(() => {
         dispatch(fetchAuthMe())
+        dispatch(fetchUsers())
+        dispatch(fetchComments())
     }, [])
-    return (
-        <>
+
+    return <>
             <Header/>
             <Container maxWidth="lg">
                 <Routes>
@@ -30,7 +37,7 @@ function App() {
                 </Routes>
             </Container>
         </>
-    );
+
 }
 
 export default App;

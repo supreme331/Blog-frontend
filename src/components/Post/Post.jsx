@@ -7,9 +7,9 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
 import {Link} from "react-router-dom"
 import {PostSkeleton} from './Skeleton'
 import {UserInfo} from "../UserInfo/UserInfo"
-import clsx from "clsx";
-import {useDispatch} from "react-redux";
-import {fetchRemovePost} from "../../redux/slices/posts";
+import clsx from "clsx"
+import {useDispatch} from "react-redux"
+import {fetchRemovePost} from "../../redux/slices/posts"
 
 export const Post = ({
                          _id, title, isFullPost, isEditable, imageUrl, tags, children, viewsCount,

@@ -4,7 +4,6 @@ import {useForm} from "react-hook-form"
 import {useDispatch, useSelector} from "react-redux"
 import {fetchAuth, selectIsAuth} from "../../redux/slices/auth"
 import {Navigate} from "react-router-dom"
-import {useEffect} from "react";
 
 export const Login = () => {
     const isAuth = useSelector(selectIsAuth)
@@ -25,15 +24,13 @@ export const Login = () => {
             window.localStorage.setItem('token', data.payload.token)
         }
     }
-    useEffect(() => {}, [])
-
     if (isAuth) {
         return <Navigate to='/'/>
     }
 
     return <Paper classes={{root: styles.root}}>
         <Typography classes={{root: styles.title}} variant="h5">
-            Всход в аккаунт
+            Вход в аккаунт
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
             <TextField

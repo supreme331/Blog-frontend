@@ -1,15 +1,18 @@
 import {Post} from "../components/Post/Post"
 import {CommentsBlock} from "../components/CommentsBlock"
-import {Index} from "../components/AddComment/AddComment"
+import {AddComment} from "../components/AddComment/AddComment"
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "../axios"
 import ReactMarkdown from "react-markdown";
+import {useSelector} from "react-redux";
 
 export const FullPost = () => {
     const [data, setData] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const {id} = useParams()
+    const commentsItems = useSelector(state => state.comments.items)
+    const users = useSelector(state => state.users.items)
 
     useEffect(() => {
         axios.get(`/posts/${id}`).then(res => {
@@ -19,7 +22,7 @@ export const FullPost = () => {
             console.warn(err)
             alert('Ошибка при получении статьи')
         })
-    }, [])
+    }, [id])
 
     if (isLoading) {
         return <Post isLoading={isLoading}/>
@@ -29,35 +32,23 @@ export const FullPost = () => {
             _id={data._id}
             title={data.title}
             imageUrl={data.imageUrl ? `http://localhost:4444${data.imageUrl}` : ''}
-            user={data.user}
+            user={data && data.user}
             createdAt={data.createdAt}
             viewsCount={data.viewsCount}
             commentsCount={3}
             tags={data.tags}
             isFullPost
         >
-            <ReactMarkdown children={data.text}/>
+            {data && <ReactMarkdown children={data.text}/>}
         </Post>
-        <CommentsBlock
-            items={[
-                {
-                    user: {
-                        fullName: "Вася Пупкин",
-                        avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-                    },
-                    text: "Это тестовый комментарий 555555",
-                },
-                {
-                    user: {
-                        fullName: "Иван Иванов",
-                        avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-                    },
-                    text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-                },
-            ]}
-            isLoading={false}
-        >
-            <Index />
-        </CommentsBlock>
+        {data && (
+            <CommentsBlock
+                items={commentsItems}
+                users={users}
+                isLoading={isLoading}
+            >
+                <AddComment postId={id}/>
+            </CommentsBlock>
+        )}
     </>
 }

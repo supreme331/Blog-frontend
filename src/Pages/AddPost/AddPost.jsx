@@ -27,6 +27,7 @@ export const AddPost = () => {
             formData.append('image', file)
             const {data} = await axios.post('/upload', formData)
             setImageUrl(data.url)
+            console.log("handleChangeFile", imageUrl)
         }
         catch (err) {
             console.warn(err)
@@ -35,6 +36,7 @@ export const AddPost = () => {
     }
     const onRemoveImage =  () => {
         setImageUrl('')
+        console.log("onRemoveImage", imageUrl)
     }
     const onChange = useCallback((value) => {
         setText(value)
@@ -46,10 +48,10 @@ export const AddPost = () => {
             const fields = {
                 title,
                 imageUrl,
-                tags: tags.split(','),
+                tags,
                 text
             }
-            console.log(tags.split(','))
+            console.log(imageUrl)
             const {data} = isEditing
                 ? await axios.patch(`/posts/${id}`, fields)
                 : await axios.post('/posts', fields)
@@ -68,7 +70,7 @@ export const AddPost = () => {
                 setTitle(data.title)
                 setText(data.text)
                 setImageUrl(data.imageUrl)
-                setTags(data.tags)
+                setTags(data.tags.join(','))
             }).catch(err => {
                 console.warn(err)
                 alert('Ошибка при получении статьи!')

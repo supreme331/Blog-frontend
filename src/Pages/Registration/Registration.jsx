@@ -10,9 +10,10 @@ export const Registration = () => {
     const dispatch = useDispatch()
     const {register, handleSubmit, formState: {errors, isValid}} = useForm({
         defaultValues: {
-            fullName: 'Игорь',
-            email: 'igor@test.ru',
-            password: '12345'
+            fullName: '',
+            email: '',
+            password: '',
+            avatarUrl: ''
         },
         mode: "all"
     })
@@ -61,6 +62,13 @@ export const Registration = () => {
                 {...register('password', {required: 'Укажите пароль'})}
                 className={styles.field}
                 label="Пароль"
+                fullWidth/>
+            <TextField
+                error={Boolean(errors.avatarUrl?.message)}
+                helperText={errors.avatarUrl?.message}
+                {...register('avatarUrl')}
+                className={styles.field}
+                label="Ссылка на аватар"
                 fullWidth/>
             <Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
                 Зарегистрироваться
