@@ -20,9 +20,8 @@ import DeleteIcon from "@mui/icons-material/Clear";
 import {fetchRemovePost} from "../redux/slices/posts";
 import {fetchComments, fetchRemoveComment} from "../redux/slices/comments";
 
-
-export const CommentsBlock = ({items, users, children, isLoading = true}) => {
-
+export const CommentsBlock = ({items, users, children, isLoading = true, title}) => {
+    const userData = useSelector(state => state.auth.data)
     const dispatch = useDispatch()
 
     const onRemove = (_id) => {
@@ -32,9 +31,7 @@ export const CommentsBlock = ({items, users, children, isLoading = true}) => {
         }
     }
 
-
-
-    return <SideBlock title="Комментарии">
+    return <SideBlock title={title}>
         <List>
             {(isLoading ? [...Array(5)] : items).map((obj, index) => {
                 let user = users.find(user => user._id === obj.user)
@@ -43,6 +40,7 @@ export const CommentsBlock = ({items, users, children, isLoading = true}) => {
                                 obj={obj}
                                 index={index}
                                 onRemove={onRemove}
+                                isEditable={userData?._id === user?._id}
                 />
             })}
         </List>
@@ -50,12 +48,15 @@ export const CommentsBlock = ({items, users, children, isLoading = true}) => {
     </SideBlock>
 }
 
-const Comment = ({isLoading, user, obj, index, onRemove}) => {
-    const ref = useRef(null)
+const Comment = ({isLoading, user, obj, index, onRemove, isEditable}) => {
+    const commentEditFormRef = useRef(null)
+    const commentEditBtnsRef = useRef(null)
     const dispatch = useDispatch()
     const [text, setText] = useState(obj.text)
     const onEdit = () => {
-    ref.current.style.display = 'flex'
+        commentEditFormRef.current.style.display === 'none'
+            ? commentEditFormRef.current.style.display = 'flex'
+            : commentEditFormRef.current.style.display = 'none'
     }
     const onSubmit = async () => {
         try {
@@ -69,11 +70,11 @@ const Comment = ({isLoading, user, obj, index, onRemove}) => {
             alert('Ошибка при изменении комментария!')
         }
         dispatch(fetchComments())
-        ref.current.style.display = 'none'
+        commentEditFormRef.current.style.display = 'none'
     }
     return <React.Fragment key={index}>
-        <ListItem alingItems="flex-start">
-            <div className={styles.editComments}>
+        <ListItem className={styles.commentItems} alingItems="flex-start">
+            {isEditable && (<div ref={commentEditBtnsRef} className={styles.editComments}>
 
                 <IconButton onClick={()=> {onEdit()}} color="primary">
                     <EditIcon />
@@ -82,12 +83,12 @@ const Comment = ({isLoading, user, obj, index, onRemove}) => {
                 <IconButton onClick={()=> {onRemove(obj._id)}} color="secondary" >
                     <DeleteIcon />
                 </IconButton>
-            </div>
+            </div>)}
             <ListItemAvatar>
                 {isLoading ? (
                     <Skeleton variant="circular" width={40} height={40}/>
                 ) : (
-                    <Avatar alt={user.fullName} src={user.avatarUrl}/>
+                    <Avatar alt={user?.fullName} src={user?.avatarUrl}/>
                 )}
             </ListItemAvatar>
             {isLoading ? (
@@ -97,8 +98,8 @@ const Comment = ({isLoading, user, obj, index, onRemove}) => {
                 </div>
             )  : (
                 <div>
-                    <ListItemText  primary={user.fullName} secondary={obj.text}/>
-                    <div ref={ref} style={{display: 'none'}}>
+                    <ListItemText  primary={user?.fullName} secondary={obj?.text}/>
+                    <div ref={commentEditFormRef} style={{display: 'none'}}>
                         <TextField
                             // defaultValue={obj.text}
                             value={text}

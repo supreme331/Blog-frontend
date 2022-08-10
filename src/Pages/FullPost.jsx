@@ -13,6 +13,7 @@ export const FullPost = () => {
     const {id} = useParams()
     const commentsItems = useSelector(state => state.comments.items)
     const users = useSelector(state => state.users.items)
+    const commentsOfThisPost = commentsItems.filter((item) => item.postId === id)
 
     useEffect(() => {
         axios.get(`/posts/${id}`).then(res => {
@@ -43,9 +44,10 @@ export const FullPost = () => {
         </Post>
         {data && (
             <CommentsBlock
-                items={commentsItems}
+                items={commentsOfThisPost}
                 users={users}
                 isLoading={isLoading}
+                title={'Комментарии'}
             >
                 <AddComment postId={id}/>
             </CommentsBlock>

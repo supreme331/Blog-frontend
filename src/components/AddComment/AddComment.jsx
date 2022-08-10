@@ -3,9 +3,10 @@ import {Avatar, Button, TextField} from "@mui/material";
 import axios from "../../axios";
 import {useState} from "react";
 import {fetchComments} from "../../redux/slices/comments";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 export const AddComment = ({postId}) => {
+    const userData = useSelector(state => state.auth.data)
     const dispatch = useDispatch()
     const [text, setText] = useState()
     const onSubmit = async () => {
@@ -28,7 +29,7 @@ export const AddComment = ({postId}) => {
     return <>
         <div className={styles.root}>
             <Avatar classes={{root: styles.avatar}}
-            src="https://mui.com/static/images/avatar/5.jpg"/>
+            src={userData?.avatarUrl}/>
             <div className={styles.form}>
                 <TextField
                     label="Написать комментарий"
