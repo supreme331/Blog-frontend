@@ -17,10 +17,10 @@ export const Post = ({
                      }) => {
     const dispatch = useDispatch()
     if (isLoading) {
-        return <PostSkeleton />
+        return <PostSkeleton/>
     }
     const onRemove = () => {
-        if(window.confirm('Вы действительно хотите удалить статью?')) {
+        if (window.confirm('Вы действительно хотите удалить статью?')) {
             dispatch(fetchRemovePost(_id))
         }
     }
@@ -30,22 +30,27 @@ export const Post = ({
                 <div className={styles.editButtons}>
                     <Link to={`/posts/${_id}/edit`}>
                         <IconButton color="primary">
-                            <EditIcon />
+                            <EditIcon/>
                         </IconButton>
                     </Link>
-                    <IconButton onClick={onRemove} color="secondary" >
-                        <DeleteIcon />
+                    <IconButton onClick={onRemove} color="secondary">
+                        <DeleteIcon/>
                     </IconButton>
                 </div>
             )}
-        {imageUrl && (
-            <img className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
-            src={imageUrl} alt={title}/>
-        )}
+        {imageUrl && isFullPost
+            ? <img className={clsx(styles.image, {[styles.imageFull]: isFullPost})}
+                   src={imageUrl} alt={title}/>
+            : imageUrl && !isFullPost
+                ? <Link to={`/posts/${_id}`}>
+                    <img className={clsx(styles.image, {[styles.imageFull]: isFullPost})}
+                         src={imageUrl} alt={title}/>
+                </Link>
+                : null}
         <div className={styles.wrapper}>
             <UserInfo {...user} additionalText={createdAt}/>
             <div className={styles.indention}>
-                <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
+                <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
                     {isFullPost ? title : <Link to={`/posts/${_id}`}>{title}</Link>}
                 </h2>
                 <ul className={styles.tags}>
@@ -58,11 +63,11 @@ export const Post = ({
                 {children && <div className={styles.content}>{children}</div>}
                 <ul className={styles.postDetails}>
                     <li>
-                        <EyeIcon />
+                        <EyeIcon/>
                         <span>{viewsCount}</span>
                     </li>
                     <li>
-                        <CommentIcon />
+                        <CommentIcon/>
                         <span>{commentsCount}</span>
                     </li>
                 </ul>

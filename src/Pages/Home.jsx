@@ -2,7 +2,7 @@ import {Grid, Tab, Tabs} from "@mui/material"
 import {Post} from "../components/Post/Post"
 import {TagsBlock} from "../components/TagsBlock/TagsBlock"
 import {CommentsBlock} from "../components/CommentsBlock"
-import {useEffect} from "react"
+import {useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {fetchPosts, fetchTags} from "../redux/slices/posts";
 
@@ -11,11 +11,16 @@ export const Home = () => {
     const dispatch = useDispatch()
     const userData = useSelector(state => state.auth.data)
     const {posts, tags} = useSelector(state => state.posts)
+    const popularPostItems = [...posts.items].sort((a, b) => a.viewsCount - b.viewsCount)
     const commentsItems = useSelector(state => state.comments.items)
-
+    const [tabsValue, setTabsValue] = useState(0)
     const isPostsLoading = posts.status === 'loading'
     const isTagsLoading = tags.status === 'loading'
     const lastComments = [...commentsItems].reverse().slice(0, 5)
+
+    const onSetTabsValue = (value) => {
+        setTabsValue(value)
+    }
 
     useEffect(() => {
         dispatch(fetchPosts())
@@ -23,13 +28,13 @@ export const Home = () => {
     }, [])
 
     return <>
-        <Tabs value={0} aria-label="basic tabs example">
-            <Tab label="Новые"/>
-            <Tab label="Популярные"/>
+        <Tabs value={tabsValue} aria-label="basic tabs example">
+            <Tab onClick={() => {onSetTabsValue(0)}} label="Новые"/>
+            <Tab onClick={() => {onSetTabsValue(1)}} label="Популярные"/>
         </Tabs>
         <Grid container spacing={4}>
             <Grid xs={8} item>
-                {(isPostsLoading ? [...Array(5)] : posts.items).map((obj, index) => isPostsLoading ? (
+                {(isPostsLoading ? [...Array(5)] : tabsValue === 0 ? posts.items : popularPostItems).map((obj, index) => isPostsLoading ? (
                     <Post key={index} isLoading={true}/>
                 ) : (
                     <Post

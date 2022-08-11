@@ -7,11 +7,10 @@ $blue: #4361ee;
   overflow: hidden;
   margin-bottom: 15px;
   position: relative;
-
   &:hover {
     border: 1px solid $blue;
     box-shadow: 0 0 0 1px $blue;
-
+    transition: all 0.15s ease;
     .editButtons {
       opacity: 1;
     }

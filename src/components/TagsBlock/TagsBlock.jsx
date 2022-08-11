@@ -8,7 +8,7 @@ export const TagsBlock = ({items, isLoading = true}) => {
     return <SideBlock title="Тэги">
         <List className={styles.tagsBlock}>
             {(isLoading ? [...Array(5)] : items).map((name, index) => (
-                <Link to={`/tags/${name}`}>
+                <Link to={`/tag/${name}`}>
                     <ListItem key={index} disablePadding>
                         <ListItemButton>
                             {/*<ListItemIcon>*/}
