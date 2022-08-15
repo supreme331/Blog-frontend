@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react"
+import React, {useRef, useState} from "react"
 import {SideBlock} from "./SideBlock/SideBlock"
 import {
     Avatar, Button,
@@ -14,10 +14,8 @@ import {
 import axios from "../axios";
 import {useDispatch, useSelector} from "react-redux";
 import styles from "./Post/Post.module.scss";
-import {Link} from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Clear";
-import {fetchRemovePost} from "../redux/slices/posts";
 import {fetchComments, fetchRemoveComment} from "../redux/slices/comments";
 
 export const CommentsBlock = ({items, users, children, isLoading = true, title}) => {
@@ -25,7 +23,7 @@ export const CommentsBlock = ({items, users, children, isLoading = true, title})
     const dispatch = useDispatch()
 
     const onRemove = (_id) => {
-        if(window.confirm('Вы действительно хотите удалить комментарий?')) {
+        if (window.confirm('Вы действительно хотите удалить комментарий?')) {
             console.log('log from component', _id)
             dispatch(fetchRemoveComment(_id))
         }
@@ -64,8 +62,7 @@ const Comment = ({isLoading, user, obj, index, onRemove, isEditable}) => {
                 text
             }
             await axios.patch(`/comments/${obj._id}`, fields)
-        }
-    catch (err) {
+        } catch (err) {
             console.warn(err)
             alert('Ошибка при изменении комментария!')
         }
@@ -75,13 +72,15 @@ const Comment = ({isLoading, user, obj, index, onRemove, isEditable}) => {
     return <React.Fragment key={index}>
         <ListItem className={styles.commentItems} alingItems="flex-start">
             {isEditable && (<div ref={commentEditBtnsRef} className={styles.editComments}>
-
-                <IconButton onClick={()=> {onEdit()}} color="primary">
-                    <EditIcon />
+                <IconButton onClick={() => {
+                    onEdit()
+                }} color="primary">
+                    <EditIcon/>
                 </IconButton>
-
-                <IconButton onClick={()=> {onRemove(obj._id)}} color="secondary" >
-                    <DeleteIcon />
+                <IconButton onClick={() => {
+                    onRemove(obj._id)
+                }} color="secondary">
+                    <DeleteIcon/>
                 </IconButton>
             </div>)}
             <ListItemAvatar>
@@ -96,14 +95,15 @@ const Comment = ({isLoading, user, obj, index, onRemove, isEditable}) => {
                     <Skeleton variant="text" width={120} height={25}/>
                     <Skeleton variant="text" width={230} height={18}/>
                 </div>
-            )  : (
+            ) : (
                 <div>
-                    <ListItemText  primary={user?.fullName} secondary={obj?.text}/>
+                    <ListItemText primary={user?.fullName} secondary={obj?.text}/>
                     <div ref={commentEditFormRef} style={{display: 'none'}}>
                         <TextField
-                            // defaultValue={obj.text}
                             value={text}
-                            onChange={(e) => {setText(e.target.value)}}
+                            onChange={(e) => {
+                                setText(e.target.value)
+                            }}
                         />
                         <Button onClick={onSubmit} variant="contained">Сохранить</Button>
                     </div>

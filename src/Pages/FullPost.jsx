@@ -11,8 +11,8 @@ export const FullPost = () => {
     const [data, setData] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const {id} = useParams()
-    const commentsItems = useSelector(state => state.comments.items)
     const users = useSelector(state => state.users.items)
+    const commentsItems = useSelector(state => state.comments.items)
     const commentsOfThisPost = commentsItems.filter((item) => item.postId === id)
 
     useEffect(() => {
@@ -36,7 +36,6 @@ export const FullPost = () => {
             user={data && data.user}
             createdAt={data.createdAt}
             viewsCount={data.viewsCount}
-            commentsCount={3}
             tags={data.tags}
             isFullPost
         >

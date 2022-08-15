@@ -20,6 +20,7 @@ export const Header = () => {
                 <Link to="/" className={styles.logo}>
                     <div>Блог Кабанова Василия</div>
                 </Link>
+
                 <div className={styles.buttons}>
                     {isAuth ? (<>
                         <Link to="/add-post">

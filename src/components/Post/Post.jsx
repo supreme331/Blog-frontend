@@ -8,14 +8,17 @@ import {Link} from "react-router-dom"
 import {PostSkeleton} from './Skeleton'
 import {UserInfo} from "../UserInfo/UserInfo"
 import clsx from "clsx"
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {fetchRemovePost} from "../../redux/slices/posts"
 
 export const Post = ({
                          _id, title, isFullPost, isEditable, imageUrl, tags, children, viewsCount,
-                         commentsCount, isLoading, user, createdAt
+                         isLoading, user, createdAt
                      }) => {
     const dispatch = useDispatch()
+    const commentsItems = useSelector(state => state.comments.items)
+    const commentsOfThisPost = commentsItems.filter((item) => item.postId === _id)
+
     if (isLoading) {
         return <PostSkeleton/>
     }
@@ -68,7 +71,7 @@ export const Post = ({
                     </li>
                     <li>
                         <CommentIcon/>
-                        <span>{commentsCount}</span>
+                        <span>{commentsOfThisPost.length}</span>
                     </li>
                 </ul>
             </div>

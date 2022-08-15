@@ -13,7 +13,7 @@ import {fetchComments} from "./redux/slices/comments";
 import axios from "./axios";
 import {useState} from "react";
 import {fetchUsers} from "./redux/slices/users";
-import {SearchPage} from "./Pages/SearchPage";
+import {SearchPage, SearchPageContainer} from "./Pages/SearchPage";
 
 function App() {
     const dispatch = useDispatch()
@@ -33,7 +33,8 @@ function App() {
                     <Route path='/posts/:id' element={<FullPost/>}/>
                     <Route path='/posts/:id/edit' element={<AddPost/>}/>
                     <Route path='/add-post' element={<AddPost/>}/>
-                    <Route path='/tag/:tagName' element={<SearchPage/>}/>
+                    <Route path='/tag/:tagName' element={<SearchPageContainer/>}/>
+                    <Route path='/search' element={<SearchPageContainer/>}/>
                     <Route path='/login' element={<Login />}/>
                     <Route path='/register' element={<Registration/>}/>
                 </Routes>

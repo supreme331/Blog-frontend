@@ -7,19 +7,22 @@ $blue: #4361ee;
   overflow: hidden;
   margin-bottom: 15px;
   position: relative;
+  box-shadow: 4px 4px 10px #818080;
   &:hover {
-    border: 1px solid $blue;
-    box-shadow: 0 0 0 1px $blue;
+    box-shadow: 4px 4px 15px #818080;
     transition: all 0.15s ease;
+    transform: scale(101%);
     .editButtons {
       opacity: 1;
     }
   }
 
   &Full {
+    box-shadow: none;
     &:hover {
       background-color: #fff;
       border: 1px solid #dedede;
+      transform: scale(100%);
       box-shadow: none;
     }
   }

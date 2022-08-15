@@ -1,52 +1,115 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Grid} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import {Post} from "../components/Post/Post";
 import {TagsBlock} from "../components/TagsBlock/TagsBlock";
-
 import {fetchPosts, fetchTags} from "../redux/slices/posts";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import * as queryString from "query-string"
+import {SearchBlock} from "../components/SearchBlock/SearchBlock";
 
-export const SearchPage = () => {
+export const SearchPageContainer = () => {
     const dispatch = useDispatch()
-    const {posts, tags} = useSelector(state => state.posts)
-    const userData = useSelector(state => state.auth.data)
-    const isPostsLoading = posts.status === 'loading'
-    const isTagsLoading = tags.status === 'loading'
-    const pathname = window.location.pathname
-    let tag = pathname.slice(5, pathname.length)
-    console.log(tag)
-    const postItems = posts.items
-    let filteredPosts = postItems.filter(post => post.tags.find(t => t === tag))
-    console.log(filteredPosts)
     useEffect(() => {
+
         dispatch(fetchPosts())
         dispatch(fetchTags())
     }, [])
 
+    const pathname = window.location.pathname
+
+    const {posts, tags} = useSelector(state => state.posts)
+    const tagsItems = Array.from(new Set(tags.items))
+    const [tag, setTag] = useState('')
+    const [filteredPosts, setFilteredPosts] = useState()
+    const postItems = posts.items
+    const queryParams = queryString.parseUrl(window.location.href)
+    const [searchRequest, setSearchRequest] = useState('')
+
+    useEffect(() => {
+        console.log('useEffect')
+        if (postItems.length > 0 && pathname.includes("tag")) {
+            let tag = pathname.slice(5, pathname.length)
+            setTag(tag)
+            setFilteredPosts(postItems.filter(post => post.tags.find(t => t === tag)))
+        }
+        if (postItems.length > 0 && pathname.includes("search")) {
+            let searchRequest = queryParams.query.searchText.toLowerCase()
+            if (queryParams.query.searchIn === "title") {
+                setFilteredPosts(postItems
+                    .filter(post => post.title.toLowerCase()
+                        .includes(searchRequest)))
+            }
+            if (queryParams.query.searchIn === "text") {
+                setFilteredPosts(postItems
+                    .filter(post => post.text.toLowerCase()
+                        .includes(searchRequest)))
+            }
+            setSearchRequest(searchRequest)
+        }
+    }, [postItems, tag, pathname, queryParams])
+
+    const userData = useSelector(state => state.auth.data)
+    const isPostsLoading = posts.status === 'loading'
+    const isTagsLoading = tags.status === 'loading'
+    const searchRequestCallBack = (tag = '') => {
+        setTag(tag)
+    }
+
+    return filteredPosts ? (<SearchPage
+        tag={tag}
+        tagsItems={tagsItems}
+        filteredPosts={filteredPosts}
+        userData={userData}
+        isPostsLoading={isPostsLoading}
+        isTagsLoading={isTagsLoading}
+        searchRequestCallBack={searchRequestCallBack}
+        searchRequest={searchRequest}
+    />) : <div>Загрузка...</div>
+
+}
+
+const SearchPage = ({
+                        tag,
+                        tagsItems,
+                        filteredPosts,
+                        userData,
+                        isPostsLoading,
+                        isTagsLoading,
+                        searchRequestCallBack,
+                        searchRequest
+                    }) => {
+
+
     return <>
-        Страница поиска
+        <Typography variant="h6" gutterBottom component="div">
+            Результаты поиска {tag.length > 0 ? `"#${tag}"` : `"${searchRequest}"`}
+        </Typography>
+
         <Grid container spacing={4}>
             <Grid xs={8} item>
-                {(isPostsLoading && filteredPosts ? [...Array(5)] : filteredPosts).map((obj, index) => isPostsLoading ? (
-                    <Post key={index} isLoading={true}/>
-                ) : (
-                    <Post
-                        _id={obj._id}
-                        title={obj.title}
-                        imageUrl={obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ''}
-                        user={obj.user}
-                        createdAt={obj.createdAt}
-                        viewsCount={obj.viewsCount}
-                        commentsCount={3}
-                        tags={obj.tags}
-                        isEditable={userData?._id === obj.user?._id}
-                    />
-                )).reverse()}
+                {filteredPosts && (isPostsLoading ? [...Array(5)] : filteredPosts)
+                    .map((obj, index) => isPostsLoading ? (
+                        <Post key={index} isLoading={true}/>
+                    ) : (
+                        <Post
+                            _id={obj._id}
+                            title={obj.title}
+                            imageUrl={obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ''}
+                            user={obj.user}
+                            createdAt={obj.createdAt}
+                            viewsCount={obj.viewsCount}
+                            commentsCount={3}
+                            tags={obj.tags}
+                            isEditable={userData?._id === obj.user?._id}
+                        />
+                    )).reverse()}
             </Grid>
-            {/*<Grid xs={4} item>*/}
-            {/*    <TagsBlock items={tags.items} isLoading={isTagsLoading} />*/}
-
-            {/*</Grid>*/}
+            <Grid xs={4} item>
+                <SearchBlock/>
+                <TagsBlock items={tagsItems}
+                           isLoading={isTagsLoading}
+                           searchRequestCallBack={searchRequestCallBack}/>
+            </Grid>
         </Grid>
     </>
 }
