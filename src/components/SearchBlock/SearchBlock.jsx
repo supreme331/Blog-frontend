@@ -1,6 +1,13 @@
-import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {
+    Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField
+} from "@mui/material"
 import {SideBlock} from "../SideBlock/SideBlock"
-import {useForm} from "react-hook-form";
+import {useForm} from "react-hook-form"
 import * as queryString from "query-string"
 import styles from "./SearchBlock.module.scss"
 
@@ -13,18 +20,12 @@ export const SearchBlock = () => {
         mode: "all"
     })
 
-
     const onSubmit = async (values) => {
-        console.log(values)
         let url = queryString.stringifyUrl({
             url: 'http://localhost:3000/search',
             query: {searchText: values.searchText, searchIn: values.searchIn}
         })
         window.location.href = url
-
-        if (values.searchIn === 'title') {
-
-        }
     }
 
     return <SideBlock title="Найти статью">
@@ -50,7 +51,7 @@ export const SearchBlock = () => {
                     <MenuItem value={'text'}>тексте</MenuItem>
                 </Select>
             </FormControl>
-            <Button type="submit" variant="outlined" size="small">Найти</Button>
+            <Button style={{margin: "10px"}} type="submit" variant="outlined" size="small">Найти</Button>
         </form>
     </SideBlock>
 }

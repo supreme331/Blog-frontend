@@ -1,11 +1,11 @@
-import {Grid, Tab, Tabs} from "@mui/material"
+import {Divider, Grid, Tab, Tabs} from "@mui/material"
 import {Post} from "../components/Post/Post"
 import {TagsBlock} from "../components/TagsBlock/TagsBlock"
 import {CommentsBlock} from "../components/CommentsBlock"
 import {useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {fetchPosts, fetchTags} from "../redux/slices/posts";
-import {SearchBlock} from "../components/SearchBlock/SearchBlock";
+import {fetchPosts, fetchTags} from "../redux/slices/posts"
+import {SearchBlock} from "../components/SearchBlock/SearchBlock"
 
 export const Home = () => {
     const users = useSelector(state => state.users.items)
@@ -30,16 +30,23 @@ export const Home = () => {
     }, [])
 
     return <>
-        <Tabs value={tabsValue} aria-label="basic tabs example">
-            <Tab onClick={() => {
-                onSetTabsValue(0)
-            }} label="Новые"/>
-            <Tab onClick={() => {
-                onSetTabsValue(1)
-            }} label="Популярные"/>
-        </Tabs>
         <Grid container spacing={4}>
-            <Grid xs={8} item>
+            <Grid xs={2} item>
+                <Tabs
+                    orientation="vertical"
+                    style={{marginBottom: "15px"}}
+                    value={tabsValue}
+                    aria-label="basic tabs example">
+                    <Tab onClick={() => {
+                        onSetTabsValue(0)
+                    }} label="Новые"/>
+                    <Tab onClick={() => {
+                        onSetTabsValue(1)
+                    }} label="Популярные"/>
+                </Tabs>
+            </Grid>
+            <Grid xs={7} item>
+                <br/>
                 {(isPostsLoading
                     ? [...Array(5)]
                     : tabsValue === 0
@@ -50,19 +57,23 @@ export const Home = () => {
                     <Post
                         _id={obj._id}
                         title={obj.title}
-                        imageUrl={obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ''}
+                        imageUrl={obj.imageUrl ? `${process.env.REACT_APP_API_URL}${obj.imageUrl}` : ''}
                         user={obj.user}
-                        createdAt={obj.createdAt}
+                        createdAt={(new Date(obj.createdAt)).toUTCString()}
                         viewsCount={obj.viewsCount}
                         tags={obj.tags}
                         isEditable={userData?._id === obj.user?._id}
                     />
                 )).reverse()}
             </Grid>
-            <Grid xs={4} item>
+            <Grid xs={3} item>
                 <SearchBlock/>
-                <TagsBlock items={tagsItems} isLoading={isTagsLoading} searchRequestCallBack={() => {
-                }}/>
+                <Divider />
+                <TagsBlock
+                    items={tagsItems}
+                    isLoading={isTagsLoading}
+                    searchRequestCallBack={() => {}}/>
+                <Divider />
                 <CommentsBlock
                     items={lastComments}
                     users={users}

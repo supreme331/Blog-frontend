@@ -1,5 +1,5 @@
-import styles from "./Post.module.scss";
-import {Skeleton, Stack} from "@mui/material";
+import styles from "./Post.module.scss"
+import {Skeleton, Stack} from "@mui/material"
 
 export const PostSkeleton = () => {
     return <div className={styles.skeleton}>

@@ -2,8 +2,7 @@ import {Button, Container} from "@mui/material"
 import {Link} from "react-router-dom"
 import styles from "./Header.module.scss"
 import {logout, selectIsAuth} from "../../redux/slices/auth"
-import {useDispatch, useSelector} from "react-redux";
-
+import {useDispatch, useSelector} from "react-redux"
 
 export const Header = () => {
     const isAuth = useSelector(selectIsAuth)
@@ -18,7 +17,7 @@ export const Header = () => {
         <Container maxWidth="lg">
             <div className={styles.inner}>
                 <Link to="/" className={styles.logo}>
-                    <div>Блог Кабанова Василия</div>
+                    Блог Кабанова Василия
                 </Link>
 
                 <div className={styles.buttons}>

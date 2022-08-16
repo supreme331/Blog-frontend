@@ -94,21 +94,22 @@ export const AddPost = () => {
         return <Navigate to='/'/>
     }
 
-    return <Paper style={{ padding: 30 }}>
-        <Button onClick={() => inputFileRef.current.click()} variant="outlined" size="large">
-            Загрузить превью
-        </Button>
-        <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden/>
+    return <Paper className={styles.root}>
         {imageUrl && (
-            <>
+            <div className={styles.previewBlock}>
+                <img className={styles.image} src={`${process.env.REACT_APP_API_URL}${imageUrl}`} alt="Uploaded"/>
                 <Button variant="contained" color="error" onClick={onRemoveImage}>
-                    Удалить
+                    Удалить превью
                 </Button>
-                <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt="Uploaded"/>
-            </>
+            </div>
         )}
-        <br/>
-        <br/>
+        <div className={styles.previewBlock}>
+            <Button onClick={() => inputFileRef.current.click()} variant="outlined" size="large">
+                Загрузить превью
+            </Button>
+            <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden/>
+        </div>
+
         <TextField
             classes={{ root: styles.title }}
             variant="standard"
@@ -129,11 +130,11 @@ export const AddPost = () => {
             <Button onClick={onSubmit} size="large" variant="contained">
                 {isEditing ? 'Сохранить' : 'Опубликовать'}
             </Button>
-            <Link to="/">
-                <Button size="large">
+            {/*<Link to="/">*/}
+                <Button size="large" href={"/"} variant="outlined">
                     Отмена
                 </Button>
-            </Link>
+            {/*</Link>*/}
         </div>
     </Paper>
 }

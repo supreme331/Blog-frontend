@@ -1,22 +1,20 @@
-import {useDispatch, useSelector} from "react-redux";
-import {Grid, Typography} from "@mui/material";
-import {Post} from "../components/Post/Post";
-import {TagsBlock} from "../components/TagsBlock/TagsBlock";
-import {fetchPosts, fetchTags} from "../redux/slices/posts";
-import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux"
+import {CircularProgress, Divider, Grid, Typography} from "@mui/material"
+import {Post} from "../components/Post/Post"
+import {TagsBlock} from "../components/TagsBlock/TagsBlock"
+import {fetchPosts, fetchTags} from "../redux/slices/posts"
+import {useEffect, useState} from "react"
 import * as queryString from "query-string"
-import {SearchBlock} from "../components/SearchBlock/SearchBlock";
+import {SearchBlock} from "../components/SearchBlock/SearchBlock"
 
 export const SearchPageContainer = () => {
     const dispatch = useDispatch()
     useEffect(() => {
-
         dispatch(fetchPosts())
         dispatch(fetchTags())
     }, [])
 
     const pathname = window.location.pathname
-
     const {posts, tags} = useSelector(state => state.posts)
     const tagsItems = Array.from(new Set(tags.items))
     const [tag, setTag] = useState('')
@@ -64,8 +62,7 @@ export const SearchPageContainer = () => {
         isTagsLoading={isTagsLoading}
         searchRequestCallBack={searchRequestCallBack}
         searchRequest={searchRequest}
-    />) : <div>Загрузка...</div>
-
+    />) : <CircularProgress />
 }
 
 const SearchPage = ({
@@ -78,8 +75,6 @@ const SearchPage = ({
                         searchRequestCallBack,
                         searchRequest
                     }) => {
-
-
     return <>
         <Typography variant="h6" gutterBottom component="div">
             Результаты поиска {tag.length > 0 ? `"#${tag}"` : `"${searchRequest}"`}
@@ -94,7 +89,7 @@ const SearchPage = ({
                         <Post
                             _id={obj._id}
                             title={obj.title}
-                            imageUrl={obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ''}
+                            imageUrl={obj.imageUrl ? `${process.env.REACT_APP_API_URL}${obj.imageUrl}` : ''}
                             user={obj.user}
                             createdAt={obj.createdAt}
                             viewsCount={obj.viewsCount}
@@ -106,6 +101,7 @@ const SearchPage = ({
             </Grid>
             <Grid xs={4} item>
                 <SearchBlock/>
+                <Divider />
                 <TagsBlock items={tagsItems}
                            isLoading={isTagsLoading}
                            searchRequestCallBack={searchRequestCallBack}/>

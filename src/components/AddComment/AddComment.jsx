@@ -1,9 +1,9 @@
 import styles from "./AddComment.module.scss"
-import {Avatar, Button, TextField} from "@mui/material";
-import axios from "../../axios";
-import {useState} from "react";
-import {fetchComments} from "../../redux/slices/comments";
-import {useDispatch, useSelector} from "react-redux";
+import {Avatar, Button, TextField} from "@mui/material"
+import axios from "../../axios"
+import {useState} from "react"
+import {fetchComments} from "../../redux/slices/comments"
+import {useDispatch, useSelector} from "react-redux"
 
 export const AddComment = ({postId}) => {
     const userData = useSelector(state => state.auth.data)
@@ -15,10 +15,9 @@ export const AddComment = ({postId}) => {
                 postId,
                 text
             }
-        await axios.post('/comments', fields)
+            await axios.post('/comments', fields)
 
-        }
-        catch (err) {
+        } catch (err) {
             console.warn(err)
             alert('Ошибка при отправке комментария!')
         }
@@ -29,7 +28,7 @@ export const AddComment = ({postId}) => {
     return <>
         <div className={styles.root}>
             <Avatar classes={{root: styles.avatar}}
-            src={userData?.avatarUrl}/>
+                    src={userData?.avatarUrl}/>
             <div className={styles.form}>
                 <TextField
                     label="Написать комментарий"
@@ -38,7 +37,9 @@ export const AddComment = ({postId}) => {
                     multiline
                     fullWidth
                     value={text}
-                    onChange={(e) => {setText(e.target.value)}}
+                    onChange={(e) => {
+                        setText(e.target.value)
+                    }}
                 />
                 <Button onClick={onSubmit} variant="contained">Отправить</Button>
             </div>

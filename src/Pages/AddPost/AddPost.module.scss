@@ -1,3 +1,9 @@
+.root {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
 .title {
   input {
     font-size: 42px;
@@ -13,7 +19,9 @@
 }
 
 .image {
-  width: 100%;
+  margin: 20px 0;
+  max-width: 500px;
+  object-fit: contain;
 }
 
 .tags {
@@ -36,9 +44,17 @@
 }
 
 .buttons {
-  display: flex;
-
-  button {
+  display: flex;  button {
     margin-right: 15px;
+  }
+}
+
+.previewBlock {
+  margin: 10px;
+  display: inline-flex;
+  flex-direction: column;
+  max-width: 500px;
+  Button {
+    max-width: 50%;
   }
 }

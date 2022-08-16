@@ -11,12 +11,12 @@ import {
     Skeleton,
     TextField
 } from "@mui/material"
-import axios from "../axios";
-import {useDispatch, useSelector} from "react-redux";
-import styles from "./Post/Post.module.scss";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Clear";
-import {fetchComments, fetchRemoveComment} from "../redux/slices/comments";
+import axios from "../axios"
+import {useDispatch, useSelector} from "react-redux"
+import styles from "./Post/Post.module.scss"
+import EditIcon from "@mui/icons-material/Edit"
+import DeleteIcon from "@mui/icons-material/Clear"
+import {fetchComments, fetchRemoveComment} from "../redux/slices/comments"
 
 export const CommentsBlock = ({items, users, children, isLoading = true, title}) => {
     const userData = useSelector(state => state.auth.data)

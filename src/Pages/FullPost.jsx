@@ -1,11 +1,11 @@
 import {Post} from "../components/Post/Post"
 import {CommentsBlock} from "../components/CommentsBlock"
 import {AddComment} from "../components/AddComment/AddComment"
-import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom"
+import {useEffect, useState} from "react"
 import axios from "../axios"
-import ReactMarkdown from "react-markdown";
-import {useSelector} from "react-redux";
+import ReactMarkdown from "react-markdown"
+import {useSelector} from "react-redux"
 
 export const FullPost = () => {
     const [data, setData] = useState()
@@ -28,13 +28,13 @@ export const FullPost = () => {
     if (isLoading) {
         return <Post isLoading={isLoading}/>
     }
-    return <>
+    return <div style={{width: "70%"}}>
         <Post
             _id={data._id}
             title={data.title}
-            imageUrl={data.imageUrl ? `http://localhost:4444${data.imageUrl}` : ''}
+            imageUrl={data.imageUrl ? `${process.env.REACT_APP_API_URL}${data.imageUrl}` : ''}
             user={data && data.user}
-            createdAt={data.createdAt}
+            createdAt={(new Date(data.createdAt)).toUTCString()}
             viewsCount={data.viewsCount}
             tags={data.tags}
             isFullPost
@@ -51,5 +51,5 @@ export const FullPost = () => {
                 <AddComment postId={id}/>
             </CommentsBlock>
         )}
-    </>
+    </div>
 }
