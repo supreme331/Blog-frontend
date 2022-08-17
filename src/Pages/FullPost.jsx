@@ -6,8 +6,12 @@ import {useEffect, useState} from "react"
 import axios from "../axios"
 import ReactMarkdown from "react-markdown"
 import {useSelector} from "react-redux"
+import {selectIsAuth} from "../redux/slices/auth"
+
 
 export const FullPost = () => {
+    const isAuth = useSelector(selectIsAuth)
+    const authData = useSelector(state => state.auth.data)
     const [data, setData] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const {id} = useParams()
@@ -32,12 +36,13 @@ export const FullPost = () => {
         <Post
             _id={data._id}
             title={data.title}
-            imageUrl={data.imageUrl ? `${process.env.REACT_APP_API_URL}${data.imageUrl}` : ''}
+            imageUrl={data.imageUrl ? `${process.env.REACT_APP_API_URL || "http://localhost:4444"}${data.imageUrl}` : ''}
             user={data && data.user}
             createdAt={(new Date(data.createdAt)).toUTCString()}
             viewsCount={data.viewsCount}
             tags={data.tags}
             isFullPost
+            isEditable={authData?._id === data?.user._id}
         >
             {data && <ReactMarkdown children={data.text}/>}
         </Post>
@@ -48,7 +53,7 @@ export const FullPost = () => {
                 isLoading={isLoading}
                 title={'Комментарии'}
             >
-                <AddComment postId={id}/>
+                {isAuth && <AddComment postId={id}/>}
             </CommentsBlock>
         )}
     </div>

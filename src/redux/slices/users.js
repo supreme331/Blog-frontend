@@ -1,14 +1,17 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import {createSlice, createAsyncThunk, createAction} from "@reduxjs/toolkit"
 import axios from "../../axios"
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     const { data } = await axios.get('/users')
     return data
 })
+export const setUserInfoId = createAction('users/setUserInfoId')
+setUserInfoId({id: ''})
 
 const initialState = {
     items: [],
     status: 'loading',
+    userInfoId: '',
 }
 
 const userSlice = createSlice({
@@ -29,6 +32,10 @@ const userSlice = createSlice({
             state.items = []
             state.status = 'error'
         },
+        //Устанавливаем id пользователя для UserPage
+        [setUserInfoId]: (state, action) => {
+            state.userInfoId = action.payload.id
+        }
     }
 })
 

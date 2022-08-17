@@ -10,6 +10,7 @@ import {UserInfo} from "../UserInfo/UserInfo"
 import clsx from "clsx"
 import {useDispatch, useSelector} from "react-redux"
 import {fetchRemovePost} from "../../redux/slices/posts"
+import {setUserInfoId} from "../../redux/slices/users";
 
 export const Post = ({
                          _id, title, isFullPost, isEditable, imageUrl, tags, children, viewsCount,
@@ -51,7 +52,12 @@ export const Post = ({
                 </Link>
                 : null}
         <div className={styles.wrapper}>
-            <UserInfo {...user} additionalText={createdAt}/>
+            <Link to="/user-info" onClick={() => {
+                dispatch(setUserInfoId({id: user._id}))
+            }}>
+                <UserInfo {...user} additionalText={createdAt}/>
+            </Link>
+
             <div className={styles.indention}>
                 <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
                     {isFullPost ? title : <Link to={`/posts/${_id}`}>{title}</Link>}

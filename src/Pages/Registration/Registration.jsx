@@ -5,9 +5,11 @@ import {fetchRegister, selectIsAuth} from "../../redux/slices/auth"
 import {useForm} from "react-hook-form"
 import {Navigate} from "react-router-dom"
 
+
 export const Registration = () => {
     const isAuth = useSelector(selectIsAuth)
     const dispatch = useDispatch()
+
     const {register, handleSubmit, formState: {errors, isValid}} = useForm({
         defaultValues: {
             fullName: '',

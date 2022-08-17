@@ -45,16 +45,18 @@ export const AddPost = () => {
     const onSubmit = async () => {
         try {
             setIsLoading(true)
+
             const fields = {
                 title,
                 imageUrl,
                 tags,
                 text
             }
-            console.log(imageUrl)
+
             const {data} = isEditing
                 ? await axios.patch(`/posts/${id}`, fields)
                 : await axios.post('/posts', fields)
+
             const _id = isEditing ? id : data._id
             navigate(`/posts/${_id}`)
         }
@@ -97,7 +99,7 @@ export const AddPost = () => {
     return <Paper className={styles.root}>
         {imageUrl && (
             <div className={styles.previewBlock}>
-                <img className={styles.image} src={`${process.env.REACT_APP_API_URL}${imageUrl}`} alt="Uploaded"/>
+                <img className={styles.image} src={`${process.env.REACT_APP_API_URL || "http://localhost:4444"}${imageUrl}`} alt="Uploaded"/>
                 <Button variant="contained" color="error" onClick={onRemoveImage}>
                     Удалить превью
                 </Button>

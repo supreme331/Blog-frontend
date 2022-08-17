@@ -11,7 +11,8 @@ import {useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {fetchComments} from "./redux/slices/comments"
 import {fetchUsers} from "./redux/slices/users"
-import {SearchPage, SearchPageContainer} from "./Pages/SearchPage"
+import {SearchPageContainer} from "./Pages/SearchPage"
+import {UserPage} from "./components/UserPage/UserPage"
 
 function App() {
     const dispatch = useDispatch()
@@ -33,6 +34,7 @@ function App() {
                 <Route path='/add-post' element={<AddPost/>}/>
                 <Route path='/tag/:tagName' element={<SearchPageContainer/>}/>
                 <Route path='/search' element={<SearchPageContainer/>}/>
+                <Route path='/user-info' element={<UserPage/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/register' element={<Registration/>}/>
             </Routes>
