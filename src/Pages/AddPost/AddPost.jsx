@@ -20,20 +20,24 @@ export const AddPost = () => {
     const inputFileRef = useRef(null)
     const isEditing = Boolean(id)
 
-    const handleChangeFile = async(event) => {
-        try {
-            const formData = new FormData()
-            const file = event.target.files[0]
-            formData.append('image', file)
-            const {data} = await axios.post('/upload', formData)
-            setImageUrl(data.url)
-            console.log("handleChangeFile", imageUrl)
-        }
-        catch (err) {
-            console.warn(err)
-            alert('Ошибка при загрузке файла')
-        }
-    }
+
+    //Логика временно не используется из-за ограничений хостинга Heroku
+    // const handleChangeFile = async(event) => {
+    //     try {
+    //         const formData = new FormData()
+    //         const file = event.target.files[0]
+    //         formData.append('image', file)
+    //         const {data} = await axios.post('/upload', formData)
+    //         setImageUrl(data.url)
+    //         console.log("handleChangeFile", imageUrl)
+    //     }
+    //     catch (err) {
+    //         console.warn(err)
+    //         alert('Ошибка при загрузке файла')
+    //     }
+    // }
+
+
     const onRemoveImage =  () => {
         setImageUrl('')
         console.log("onRemoveImage", imageUrl)
@@ -99,17 +103,30 @@ export const AddPost = () => {
     return <Paper className={styles.root}>
         {imageUrl && (
             <div className={styles.previewBlock}>
-                <img className={styles.image} src={`${process.env.REACT_APP_API_URL || "http://localhost:4444"}${imageUrl}`} alt="Uploaded"/>
+                {/*Логика временно не используется из-за ограничений хостинга Heroku*/}
+                {/*<img className={styles.image} src={`${process.env.REACT_APP_API_URL || "http://localhost:4444"}${imageUrl}`} alt="Uploaded"/>*/}
+                <img className={styles.image} src={imageUrl} alt="Uploaded"/>
                 <Button variant="contained" color="error" onClick={onRemoveImage}>
                     Удалить превью
                 </Button>
             </div>
         )}
         <div className={styles.previewBlock}>
-            <Button onClick={() => inputFileRef.current.click()} variant="outlined" size="large">
-                Загрузить превью
-            </Button>
-            <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden/>
+
+            {/*Логика временно не используется из-за ограничений хостинга Heroku*/}
+            {/*<Button onClick={() => inputFileRef.current.click()} variant="outlined" size="large">*/}
+            {/*    Загрузить превью*/}
+            {/*</Button>*/}
+            {/*<input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden/>*/}
+
+            <TextField
+                classes={{ root: styles.tags }}
+                variant="standard"
+                placeholder="Укажите ссылку на изображение"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                fullWidth
+            />
         </div>
 
         <TextField
