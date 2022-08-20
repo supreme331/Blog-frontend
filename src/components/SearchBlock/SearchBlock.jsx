@@ -22,7 +22,7 @@ export const SearchBlock = () => {
 
     const onSubmit = async (values) => {
         window.location.href = queryString.stringifyUrl({
-            url: process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/search` : 'http://localhost:3000/search',
+            url: process.env.REACT_APP_API_URL ? 'https://blog-frontend-nine-taupe.vercel.app/search' : 'http://localhost:3000/search',
             query: {searchText: values.searchText, searchIn: values.searchIn}
         })
     }
