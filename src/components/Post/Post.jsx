@@ -52,9 +52,7 @@ export const Post = ({
                 </Link>
                 : null}
         <div className={styles.wrapper}>
-            <Link to="/user-info" onClick={() => {
-                dispatch(setUserInfoId({id: user._id}))
-            }}>
+            <Link to={`/user-info/${user._id}`} >
                 <UserInfo {...user} additionalText={createdAt}/>
             </Link>
 

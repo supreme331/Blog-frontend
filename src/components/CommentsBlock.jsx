@@ -91,9 +91,7 @@ const Comment = ({isLoading, user, item, index, onRemove, isEditable, title}) =>
                 {isLoading ? (
                     <Skeleton variant="circular" width={40} height={40}/>
                 ) : (
-                    <Link to="/user-info" onClick={() => {
-                        dispatch(setUserInfoId({id: user._id}))
-                    }}>
+                    <Link to={`/user-info/${user._id}`} >
                         <Avatar alt={user?.fullName} src={user?.avatarUrl}/>
                     </Link>
                 )}

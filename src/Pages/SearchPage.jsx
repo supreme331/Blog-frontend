@@ -24,7 +24,6 @@ export const SearchPageContainer = () => {
     const [searchRequest, setSearchRequest] = useState('')
 
     useEffect(() => {
-        console.log('useEffect')
         if (postItems.length > 0 && pathname.includes("tag")) {
             let tag = pathname.slice(5, pathname.length)
             setTag(tag)
@@ -89,7 +88,8 @@ const SearchPage = ({
                         <Post
                             _id={obj._id}
                             title={obj.title}
-                            imageUrl={obj.imageUrl ? `${process.env.REACT_APP_API_URL || "http://localhost:4444"}${obj.imageUrl}` : ''}
+                            // imageUrl={obj.imageUrl ? `${process.env.REACT_APP_API_URL || "http://localhost:4444"}${obj.imageUrl}` : ''}
+                            imageUrl={obj.imageUrl ? obj.imageUrl : ''}
                             user={obj.user}
                             createdAt={obj.createdAt}
                             viewsCount={obj.viewsCount}

@@ -1,14 +1,16 @@
-import * as queryString from "query-string"
 import {useDispatch, useSelector} from "react-redux"
-import {Avatar, Button, Container, FormControl, Grid, TextField, Typography} from "@mui/material"
+import {Avatar, Button, CircularProgress, Container, Grid, TextField, Typography} from "@mui/material"
 import {useForm} from "react-hook-form"
 import styles from "./UserPage.module.scss"
-import axios from "../../axios";
-import {useEffect, useState} from "react";
+import axios from "../../axios"
+import {useEffect, useState} from "react"
+import {setUserInfoId} from "../../redux/slices/users";
 
 export const UserPage = () => {
+    const dispatch = useDispatch()
     const authData = useSelector(state => state.auth.data)
     const userId = useSelector(state => state.users.userInfoId)
+    const userIdFromQuery = window.location.pathname.split("/")[2]
     const user = useSelector(state => state.users.items).filter(user => user._id === userId)[0]
     const [fullName, setFullName] = useState(user?.fullName)
     const [email, setEmail] = useState(user?.email)
@@ -19,6 +21,7 @@ export const UserPage = () => {
     console.log(user)
 
     useEffect(() => {
+        dispatch(setUserInfoId({id: userIdFromQuery}))
         setFullName(user?.fullName)
         setEmail(user?.email)
         setAvatarUrl(user?.avatarUrl)
@@ -56,7 +59,7 @@ export const UserPage = () => {
         }
     }
 
-    return <Container style={{marginTop: "20px"}}>
+    return user ? (<Container style={{marginTop: "20px"}}>
         {isOwner ? (<Grid container spacing={4}>
             <Grid xs={3} item rowSpacing={4}>
                 <Avatar alt={user?.fullName} src={user?.avatarUrl} sx={{width: 200, height: 200}}/>
@@ -149,5 +152,5 @@ export const UserPage = () => {
                 </Grid>
             </Grid>
         )}
-    </Container>
+    </Container>) : (<CircularProgress />)
 }

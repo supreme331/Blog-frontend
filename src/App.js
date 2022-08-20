@@ -34,7 +34,7 @@ function App() {
                 <Route path='/add-post' element={<AddPost/>}/>
                 <Route path='/tag/:tagName' element={<SearchPageContainer/>}/>
                 <Route path='/search' element={<SearchPageContainer/>}/>
-                <Route path='/user-info' element={<UserPage/>}/>
+                <Route path='/user-info/:id' element={<UserPage/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/register' element={<Registration/>}/>
             </Routes>

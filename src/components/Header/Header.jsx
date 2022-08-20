@@ -21,7 +21,7 @@ export const Header = () => {
                 <Link to="/" className={styles.logo}>
                     Блог Кабанова Василия
                 </Link>
-                {isAuth && <Link to={`/user-info`} onClick={() => {dispatch(setUserInfoId({id: userData._id}))}} className={styles.authInfo}>
+                {isAuth && <Link to={`/user-info/${userData._id}`} onClick={() => {dispatch(setUserInfoId({id: userData._id}))}} className={styles.authInfo}>
                     <Avatar alt={userData?.fullName} src={userData?.avatarUrl}/>
                     <Typography className={styles.fullName} variant="h6" gutterBottom component="div">
                         {userData?.fullName}

@@ -12,7 +12,7 @@ import * as queryString from "query-string"
 import styles from "./SearchBlock.module.scss"
 
 export const SearchBlock = () => {
-    const {register, handleSubmit, formState: {errors, isValid}} = useForm({
+    const {register, handleSubmit} = useForm({
         defaultValues: {
             searchText: '',
             searchIn: 'title'
@@ -21,11 +21,10 @@ export const SearchBlock = () => {
     })
 
     const onSubmit = async (values) => {
-        let url = queryString.stringifyUrl({
-            url: 'http://localhost:3000/search',
+        window.location.href = queryString.stringifyUrl({
+            url: process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/search` : 'http://localhost:3000/search',
             query: {searchText: values.searchText, searchIn: values.searchIn}
         })
-        window.location.href = url
     }
 
     return <SideBlock title="Найти статью">
