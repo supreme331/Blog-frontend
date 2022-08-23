@@ -6,6 +6,7 @@ import {fetchPosts, fetchTags} from "../redux/slices/posts"
 import {useEffect, useState} from "react"
 import * as queryString from "query-string"
 import {SearchBlock} from "../components/SearchBlock/SearchBlock"
+import {Link} from "react-router-dom";
 
 export const SearchPageContainer = () => {
 
@@ -63,7 +64,7 @@ export const SearchPageContainer = () => {
         isTagsLoading={isTagsLoading}
         searchRequestCallBack={searchRequestCallBack}
         searchRequest={searchRequest}
-    />) : <CircularProgress />
+    />) : <CircularProgress/>
 }
 
 const SearchPage = ({
@@ -82,10 +83,12 @@ const SearchPage = ({
         </Typography>
         <Grid container spacing={4}>
             <Grid xs={8} item>
-                {filteredPosts && (isPostsLoading ? [...Array(5)] : filteredPosts)
-                    .map((obj, index) => isPostsLoading ? (
-                        <Post key={index} isLoading={true}/>
-                    ) : (
+                {filteredPosts && filteredPosts.length === 0
+                    ? <p>Ничего не найдено...</p>
+                    : filteredPosts.map((obj, index) => isPostsLoading ? (
+                    <Post key={index} isLoading={true}/>
+                ) : (
+                    <Link to={`/posts/${obj._id}`}>
                         <Post
                             _id={obj._id}
                             title={obj.title}
@@ -98,11 +101,12 @@ const SearchPage = ({
                             tags={obj.tags}
                             isEditable={userData?._id === obj.user?._id}
                         />
-                    )).reverse()}
+                    </Link>
+                )).reverse()}
             </Grid>
             <Grid xs={4} item>
                 <SearchBlock/>
-                <Divider />
+                <Divider/>
                 <TagsBlock items={tagsItems}
                            isLoading={isTagsLoading}
                            searchRequestCallBack={searchRequestCallBack}/>
