@@ -2,6 +2,7 @@ $blue: #4361ee;
 
 a {
   text-decoration: none;
+  color: #252525;
 }
 
 .root {
@@ -12,10 +13,12 @@ a {
   margin-bottom: 15px;
   position: relative;
   box-shadow: 4px 4px 10px #818080;
+
   &:hover {
     box-shadow: 4px 4px 15px #818080;
     transition: all 0.15s ease;
     transform: scale(101%);
+
     .editButtons {
       opacity: 1;
     }
@@ -23,6 +26,7 @@ a {
 
   &Full {
     box-shadow: none;
+
     &:hover {
       background-color: #fff;
       border: 1px solid #dedede;
@@ -62,19 +66,11 @@ a {
 .title {
   font-size: 28px;
   margin: 0;
-
-  a {
-    text-decoration: none;
-    color: #000;
-
-    &:hover {
-      color: $blue;
-    }
-  }
+  font-weight: 700;
+  color: #000;
 
   &Full {
-    font-size: 42px;
-    font-weight: 900;
+    font-size: 32px;
   }
 }
 
@@ -161,20 +157,15 @@ a {
   opacity: 0;
   transition: all 0.15s ease-in-out;
 }
+
 .editComments {
   @extend .editButtons;
   display: none;
-  //position: absolute;
-  //right: 15px;
-  //top: 15px;
-  //background-color: rgba(255, 255, 255, 1);
-  //border-radius: 10px;
   opacity: 1;
-  //transition: all 0.15s ease-in-out;
 }
 
 .commentItems:hover {
-  .editComments{
+  .editComments {
     display: block;
   }
 }

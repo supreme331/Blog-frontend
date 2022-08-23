@@ -12,6 +12,7 @@ import * as queryString from "query-string"
 import styles from "./SearchBlock.module.scss"
 
 export const SearchBlock = () => {
+
     const {register, handleSubmit} = useForm({
         defaultValues: {
             searchText: '',
@@ -22,7 +23,9 @@ export const SearchBlock = () => {
 
     const onSubmit = async (values) => {
         window.location.href = queryString.stringifyUrl({
-            url: process.env.REACT_APP_API_URL ? 'https://blog-frontend-nine-taupe.vercel.app/search' : 'http://localhost:3000/search',
+            url: process.env.REACT_APP_API_URL
+                ? 'https://blog-frontend-nine-taupe.vercel.app/search'
+                : 'http://localhost:3000/search',
             query: {searchText: values.searchText, searchIn: values.searchIn}
         })
     }

@@ -2,26 +2,28 @@ import {Route, Routes} from 'react-router-dom'
 import {Container} from "@mui/material"
 import {Header} from "./components/Header/Header"
 import {Home} from "./Pages/Home"
-import {FullPost} from "./Pages/FullPost"
+import {FullPost} from "./Pages/FullPost/FullPost"
 import {AddPost} from "./Pages/AddPost/AddPost"
 import {Login} from "./Pages/Login/Login"
 import {Registration} from "./Pages/Registration/Registration"
-import {fetchAuthMe, selectIsAuth} from "./redux/slices/auth"
+import {fetchAuthMe} from "./redux/slices/auth"
 import {useEffect} from "react"
-import {useDispatch, useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
 import {fetchComments} from "./redux/slices/comments"
 import {fetchUsers} from "./redux/slices/users"
 import {SearchPageContainer} from "./Pages/SearchPage"
 import {UserPage} from "./components/UserPage/UserPage"
+import {fetchPosts, fetchTags} from "./redux/slices/posts"
 
 function App() {
     const dispatch = useDispatch()
-    const isAuth = useSelector(selectIsAuth)
 
     useEffect(() => {
         dispatch(fetchAuthMe())
         dispatch(fetchUsers())
         dispatch(fetchComments())
+        dispatch(fetchPosts())
+        dispatch(fetchTags())
     }, [])
 
     return <>
@@ -40,7 +42,6 @@ function App() {
             </Routes>
         </Container>
     </>
-
 }
 
 export default App;

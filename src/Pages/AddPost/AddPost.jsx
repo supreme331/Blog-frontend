@@ -2,7 +2,7 @@ import {useCallback, useEffect, useMemo, useRef, useState} from "react"
 import {Button, Paper, TextField} from "@mui/material"
 import styles from './AddPost.module.scss'
 import SimpleMDE from 'react-simplemde-editor'
-import {Link, Navigate, useNavigate, useParams} from "react-router-dom"
+import {Navigate, useNavigate, useParams} from "react-router-dom"
 import {useSelector} from "react-redux"
 import {selectIsAuth} from "../../redux/slices/auth"
 import 'easymde/dist/easymde.min.css'
@@ -14,10 +14,9 @@ export const AddPost = () => {
     const navigate = useNavigate()
     const [text, setText] = useState('')
     const [imageUrl, setImageUrl] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
     const [title, setTitle] = useState('')
     const [tags, setTags] = useState('')
-    const inputFileRef = useRef(null)
+    const inputFileRef = useRef(null) //Логика временно не используется из-за ограничений хостинга Heroku
     const isEditing = Boolean(id)
 
 
@@ -48,8 +47,6 @@ export const AddPost = () => {
 
     const onSubmit = async () => {
         try {
-            setIsLoading(true)
-
             const fields = {
                 title,
                 imageUrl,
@@ -128,7 +125,6 @@ export const AddPost = () => {
                 fullWidth
             />
         </div>
-
         <TextField
             classes={{ root: styles.title }}
             variant="standard"
@@ -146,14 +142,12 @@ export const AddPost = () => {
             fullWidth />
         <SimpleMDE className={styles.editor} value={text} onChange={onChange} options={options}/>
         <div className={styles.buttons}>
-            <Button onClick={onSubmit} size="large" variant="contained">
+            <Button onClick={onSubmit} size="large" variant="outlined">
                 {isEditing ? 'Сохранить' : 'Опубликовать'}
             </Button>
-            {/*<Link to="/">*/}
-                <Button size="large" href={"/"} variant="outlined">
+                <Button size="large" href={"/"}  variant="contained">
                     Отмена
                 </Button>
-            {/*</Link>*/}
         </div>
     </Paper>
 }

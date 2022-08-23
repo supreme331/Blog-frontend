@@ -10,12 +10,12 @@ import {UserInfo} from "../UserInfo/UserInfo"
 import clsx from "clsx"
 import {useDispatch, useSelector} from "react-redux"
 import {fetchRemovePost} from "../../redux/slices/posts"
-import {setUserInfoId} from "../../redux/slices/users";
 
 export const Post = ({
                          _id, title, isFullPost, isEditable, imageUrl, tags, children, viewsCount,
                          isLoading, user, createdAt
                      }) => {
+
     const dispatch = useDispatch()
     const commentsItems = useSelector(state => state.comments.items)
     const commentsOfThisPost = commentsItems.filter((item) => item.postId === _id)
@@ -23,11 +23,13 @@ export const Post = ({
     if (isLoading) {
         return <PostSkeleton/>
     }
+
     const onRemove = () => {
         if (window.confirm('Вы действительно хотите удалить статью?')) {
             dispatch(fetchRemovePost(_id))
         }
     }
+
     return <div className={clsx(styles.root, {[styles.rootFull]: isFullPost})}>
         {
             isEditable && (
@@ -42,23 +44,17 @@ export const Post = ({
                     </IconButton>
                 </div>
             )}
-        {imageUrl && isFullPost
-            ? <img className={clsx(styles.image, {[styles.imageFull]: isFullPost})}
+        {
+            imageUrl && <img className={clsx(styles.image, {[styles.imageFull]: isFullPost})}
                    src={imageUrl} alt={title}/>
-            : imageUrl && !isFullPost
-                ? <Link to={`/posts/${_id}`}>
-                    <img className={clsx(styles.image, {[styles.imageFull]: isFullPost})}
-                         src={imageUrl} alt={title}/>
-                </Link>
-                : null}
+            }
         <div className={styles.wrapper}>
-            <Link to={`/user-info/${user._id}`} >
+            <Link style={{display: "inline-block"}} to={`/user-info/${user._id}`}>
                 <UserInfo {...user} additionalText={createdAt}/>
             </Link>
-
             <div className={styles.indention}>
                 <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
-                    {isFullPost ? title : <Link to={`/posts/${_id}`}>{title}</Link>}
+                    {title}
                 </h2>
                 <ul className={styles.tags}>
                     {tags.map(name => (

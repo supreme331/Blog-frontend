@@ -4,11 +4,15 @@ import {useDispatch, useSelector} from "react-redux"
 import {fetchRegister, selectIsAuth} from "../../redux/slices/auth"
 import {useForm} from "react-hook-form"
 import {Navigate} from "react-router-dom"
+import {useState} from "react"
+import {onTestSubmit} from "../Login/Login"
 
 
 export const Registration = () => {
+
     const isAuth = useSelector(selectIsAuth)
     const dispatch = useDispatch()
+    const [avatarUrl, setAvatarUrl] = useState('')
 
     const {register, handleSubmit, formState: {errors, isValid}} = useForm({
         defaultValues: {
@@ -39,7 +43,7 @@ export const Registration = () => {
             Создание аккаунта
         </Typography>
         <div className={styles.avatar}>
-            <Avatar sx={{width: 100, height: 100}}/>
+            <Avatar src={avatarUrl} sx={{width: 100, height: 100}}/>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
@@ -71,10 +75,20 @@ export const Registration = () => {
                 {...register('avatarUrl')}
                 className={styles.field}
                 label="Ссылка на аватар"
+                value={avatarUrl}
+                onChange={(e) => setAvatarUrl(e.target.value)}
                 fullWidth/>
             <Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
                 Зарегистрироваться
             </Button>
         </form>
+        <Typography classes={{root: styles.title}} variant="h5">
+            Или
+        </Typography>
+        <Button onClick={() => {
+            onTestSubmit(dispatch)
+        }} size="large" variant="contained" fullWidth>
+            Войти как тестовый пользователь
+        </Button>
     </Paper>
 }

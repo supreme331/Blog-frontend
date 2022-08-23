@@ -5,9 +5,22 @@ import {useDispatch, useSelector} from "react-redux"
 import {fetchAuth, selectIsAuth} from "../../redux/slices/auth"
 import {Navigate} from "react-router-dom"
 
+export const onTestSubmit = async (dispatch) => {
+    const data = await dispatch(fetchAuth({email: 'test@test.ru', password: '12345'}))
+    if (!data.payload) {
+        return alert('Не удалось авторизоваться!')
+    }
+    if ('token' in data.payload) {
+        window.localStorage.setItem('token', data.payload.token)
+    }
+    console.log('Тестовая авторизация', data)
+}
+
 export const Login = () => {
+
     const isAuth = useSelector(selectIsAuth)
     const dispatch = useDispatch()
+
     const {register, handleSubmit, formState: {errors, isValid}} = useForm({
         defaultValues: {
             email: '',
@@ -15,6 +28,7 @@ export const Login = () => {
         },
         mode: "all"
     })
+
     const onSubmit = async (values) => {
         const data = await dispatch(fetchAuth(values))
         if (!data.payload) {
@@ -24,6 +38,7 @@ export const Login = () => {
             window.localStorage.setItem('token', data.payload.token)
         }
     }
+
     if (isAuth) {
         return <Navigate to='/'/>
     }
@@ -55,5 +70,13 @@ export const Login = () => {
                 Войти
             </Button>
         </form>
+        <Typography classes={{root: styles.title}} variant="h5">
+            Или
+        </Typography>
+        <Button onClick={() => {
+            onTestSubmit(dispatch)
+        }} size="large" variant="contained" fullWidth>
+            Войти как тестовый пользователь
+        </Button>
     </Paper>
 }

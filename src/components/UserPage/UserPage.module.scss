@@ -1,8 +1,47 @@
+.root {
+  margin-top: 20px;
+}
+
 .form {
   display: flex;
   flex-direction: column;
 }
 
-//.formItem {
-//  margin: 10px;
-//}
+.userInfoBlock {
+  a {
+    text-decoration: none;
+    color: black
+  }
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+}
+
+.MuiAvatar-root {
+  width: 100px;
+  height: 100px;
+}
+
+@media (min-width: 720px) {
+  .avatar {
+    width: 150px;
+    height: 150px;
+  }
+  .MuiAvatar-root {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (min-width: 992px) {
+  .avatar {
+    width: 200px;
+    height: 200px;
+  }
+  .MuiAvatar-root {
+    width: 200px;
+    height: 200px;
+  }
+}

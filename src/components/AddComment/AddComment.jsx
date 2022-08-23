@@ -6,9 +6,11 @@ import {fetchComments} from "../../redux/slices/comments"
 import {useDispatch, useSelector} from "react-redux"
 
 export const AddComment = ({postId}) => {
+
     const userData = useSelector(state => state.auth.data)
     const dispatch = useDispatch()
     const [text, setText] = useState()
+
     const onSubmit = async () => {
         try {
             const fields = {
@@ -21,6 +23,7 @@ export const AddComment = ({postId}) => {
             console.warn(err)
             alert('Ошибка при отправке комментария!')
         }
+
         setText('')
         dispatch(fetchComments())
     }

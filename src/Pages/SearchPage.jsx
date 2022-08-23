@@ -8,12 +8,8 @@ import * as queryString from "query-string"
 import {SearchBlock} from "../components/SearchBlock/SearchBlock"
 
 export const SearchPageContainer = () => {
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(fetchPosts())
-        dispatch(fetchTags())
-    }, [])
 
+    const dispatch = useDispatch()
     const pathname = window.location.pathname
     const {posts, tags} = useSelector(state => state.posts)
     const tagsItems = Array.from(new Set(tags.items))
@@ -22,6 +18,11 @@ export const SearchPageContainer = () => {
     const postItems = posts.items
     const queryParams = queryString.parseUrl(window.location.href)
     const [searchRequest, setSearchRequest] = useState('')
+
+    useEffect(() => {
+        dispatch(fetchPosts())
+        dispatch(fetchTags())
+    }, [])
 
     useEffect(() => {
         if (postItems.length > 0 && pathname.includes("tag")) {
@@ -48,6 +49,7 @@ export const SearchPageContainer = () => {
     const userData = useSelector(state => state.auth.data)
     const isPostsLoading = posts.status === 'loading'
     const isTagsLoading = tags.status === 'loading'
+
     const searchRequestCallBack = (tag = '') => {
         setTag(tag)
     }
@@ -78,7 +80,6 @@ const SearchPage = ({
         <Typography variant="h6" gutterBottom component="div">
             Результаты поиска {tag.length > 0 ? `"#${tag}"` : `"${searchRequest}"`}
         </Typography>
-
         <Grid container spacing={4}>
             <Grid xs={8} item>
                 {filteredPosts && (isPostsLoading ? [...Array(5)] : filteredPosts)

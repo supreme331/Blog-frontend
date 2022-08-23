@@ -1,7 +1,8 @@
 import React, {useRef, useState} from "react"
 import {SideBlock} from "./SideBlock/SideBlock"
 import {
-    Avatar, Button,
+    Avatar,
+    Button,
     Divider,
     IconButton,
     List,
@@ -18,9 +19,9 @@ import styles from "./Post/Post.module.scss"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Clear"
 import {fetchComments, fetchRemoveComment} from "../redux/slices/comments"
-import {setUserInfoId} from "../redux/slices/users"
 
 export const CommentsBlock = ({items, users, children, isLoading = true, title}) => {
+
     const userData = useSelector(state => state.auth.data)
     const dispatch = useDispatch()
 
@@ -50,15 +51,18 @@ export const CommentsBlock = ({items, users, children, isLoading = true, title})
 }
 
 const Comment = ({isLoading, user, item, index, onRemove, isEditable, title}) => {
+
     const commentEditFormRef = useRef(null)
     const commentEditBtnsRef = useRef(null)
     const dispatch = useDispatch()
     const [text, setText] = useState(item.text)
+
     const onEdit = () => {
         commentEditFormRef.current.style.display === 'none'
             ? commentEditFormRef.current.style.display = 'flex'
             : commentEditFormRef.current.style.display = 'none'
     }
+
     const onSubmit = async () => {
         try {
             const fields = {
@@ -72,6 +76,7 @@ const Comment = ({isLoading, user, item, index, onRemove, isEditable, title}) =>
         dispatch(fetchComments())
         commentEditFormRef.current.style.display = 'none'
     }
+
     return <React.Fragment key={index}>
         <ListItem className={styles.commentItems} alingItems="flex-start">
             {isEditable && (<div ref={commentEditBtnsRef} className={styles.editComments}>
@@ -86,17 +91,15 @@ const Comment = ({isLoading, user, item, index, onRemove, isEditable, title}) =>
                     <DeleteIcon/>
                 </IconButton>
             </div>)}
-
             <ListItemAvatar>
                 {isLoading ? (
                     <Skeleton variant="circular" width={40} height={40}/>
                 ) : (
-                    <Link to={`/user-info/${user?._id}`} >
+                    <Link to={`/user-info/${user?._id}`}>
                         <Avatar alt={user?.fullName} src={user?.avatarUrl}/>
                     </Link>
                 )}
             </ListItemAvatar>
-
             {isLoading ? (
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                     <Skeleton variant="text" width={120} height={25}/>
