@@ -6,7 +6,7 @@ import {fetchPosts, fetchTags} from "../redux/slices/posts"
 import {useEffect, useState} from "react"
 import * as queryString from "query-string"
 import {SearchBlock} from "../components/SearchBlock/SearchBlock"
-import {Link} from "react-router-dom";
+import {Link} from "react-router-dom"
 
 export const SearchPageContainer = () => {
 

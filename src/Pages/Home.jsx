@@ -5,7 +5,6 @@ import {CommentsBlock} from "../components/CommentsBlock"
 import {useState} from "react"
 import {useSelector} from "react-redux"
 import {SearchBlock} from "../components/SearchBlock/SearchBlock"
-import {Link} from "react-router-dom"
 
 export const Home = () => {
 
@@ -46,7 +45,6 @@ export const Home = () => {
                         : popularPostItems).map((obj, index) => isPostsLoading ? (
                     <Post key={index} isLoading={true}/>
                 ) : (
-                    <Link to={`/posts/${obj._id}`}>
                         <Post
                             _id={obj._id}
                             title={obj.title}
@@ -58,7 +56,6 @@ export const Home = () => {
                             tags={obj.tags}
                             isEditable={userData?._id === obj.user?._id}
                         />
-                    </Link>
                 )).reverse()}
             </Grid>
             <Grid xs={4} item>

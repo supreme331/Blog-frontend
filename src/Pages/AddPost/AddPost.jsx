@@ -3,10 +3,11 @@ import {Button, Paper, TextField} from "@mui/material"
 import styles from './AddPost.module.scss'
 import SimpleMDE from 'react-simplemde-editor'
 import {Navigate, useNavigate, useParams} from "react-router-dom"
-import {useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {selectIsAuth} from "../../redux/slices/auth"
 import 'easymde/dist/easymde.min.css'
 import axios from '../../axios'
+import {initializationApp} from "../../App";
 
 export const AddPost = () => {
     const {id} = useParams()
@@ -18,7 +19,7 @@ export const AddPost = () => {
     const [tags, setTags] = useState('')
     const inputFileRef = useRef(null) //Логика временно не используется из-за ограничений хостинга Heroku
     const isEditing = Boolean(id)
-
+    const dispatch = useDispatch()
 
     //Логика временно не используется из-за ограничений хостинга Heroku
     // const handleChangeFile = async(event) => {
@@ -57,7 +58,7 @@ export const AddPost = () => {
             const {data} = isEditing
                 ? await axios.patch(`/posts/${id}`, fields)
                 : await axios.post('/posts', fields)
-
+            initializationApp(dispatch)
             const _id = isEditing ? id : data._id
             navigate(`/posts/${_id}`)
         }
@@ -73,7 +74,7 @@ export const AddPost = () => {
                 setTitle(data.title)
                 setText(data.text)
                 setImageUrl(data.imageUrl)
-                setTags(data.tags.join(','))
+                setTags(data.tags.join(', '))
             }).catch(err => {
                 console.warn(err)
                 alert('Ошибка при получении статьи!')

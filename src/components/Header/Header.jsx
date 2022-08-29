@@ -5,6 +5,7 @@ import {logout, selectIsAuth} from "../../redux/slices/auth"
 import {useDispatch, useSelector} from "react-redux"
 import {setUserInfoId} from "../../redux/slices/users"
 import logo from "../../img/logo.svg"
+import {initializationApp} from "../../App"
 
 export const Header = () => {
 
@@ -21,7 +22,7 @@ export const Header = () => {
 
     return <Container className={styles.root} maxWidth="lg">
         <div className={styles.inner}>
-            <Link to="/" className={styles.logo}>
+            <Link onClick={() =>{initializationApp(dispatch)}} to="/" className={styles.logo}>
                 <div>
                     <img src={logo} alt="Кабанов блог"/>
                 </div>

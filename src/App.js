@@ -15,15 +15,19 @@ import {SearchPageContainer} from "./Pages/SearchPage"
 import {UserPage} from "./components/UserPage/UserPage"
 import {fetchPosts, fetchTags} from "./redux/slices/posts"
 
+export const initializationApp = (dispatch) => {
+    dispatch(fetchAuthMe())
+    dispatch(fetchUsers())
+    dispatch(fetchComments())
+    dispatch(fetchPosts())
+    dispatch(fetchTags())
+}
+
 function App() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(fetchAuthMe())
-        dispatch(fetchUsers())
-        dispatch(fetchComments())
-        dispatch(fetchPosts())
-        dispatch(fetchTags())
+        initializationApp(dispatch)
     }, [])
 
     return <>

@@ -45,36 +45,65 @@ export const Post = ({
                 </div>
             )}
         {
-            imageUrl && <img className={clsx(styles.image, {[styles.imageFull]: isFullPost})}
-                   src={imageUrl} alt={title}/>
-            }
-        <div className={styles.wrapper}>
-            <Link style={{display: "inline-block"}} to={`/user-info/${user._id}`}>
-                <UserInfo {...user} additionalText={createdAt}/>
-            </Link>
-            <div className={styles.indention}>
-                <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
-                    {title}
-                </h2>
-                <ul className={styles.tags}>
-                    {tags.map(name => (
-                        <li key={name}>
-                            <Link to={`/tag/${name}`}>#{name}</Link>
-                        </li>
-                    ))}
-                </ul>
-                {children && <div className={styles.content}>{children}</div>}
-                <ul className={styles.postDetails}>
-                    <li>
-                        <EyeIcon/>
-                        <span>{viewsCount}</span>
+            imageUrl && !isFullPost
+                ? (<Link to={`/posts/${_id}`}>
+                    <img className={clsx(styles.image, {[styles.imageFull]: isFullPost})} src={imageUrl} alt={title}/>
+                </Link>)
+                : (<img className={clsx(styles.image, {[styles.imageFull]: isFullPost})} src={imageUrl} alt={title}/>)
+        }
+        {
+            isFullPost
+                ? <PostData
+                    user={user}
+                    createdAt={createdAt}
+                    isFullPost={isFullPost}
+                    tags={tags}
+                    title={title}
+                    commentsOfThisPost={commentsOfThisPost}
+                    viewsCount={viewsCount}
+                    children={children}/>
+                : <Link to={`/posts/${_id}`}>
+                    <PostData
+                        user={user}
+                        createdAt={createdAt}
+                        isFullPost={isFullPost}
+                        tags={tags}
+                        title={title}
+                        commentsOfThisPost={commentsOfThisPost}
+                        viewsCount={viewsCount}
+                        children={children}/>
+                </Link>
+        }
+    </div>
+}
+
+const PostData = ({user, createdAt, isFullPost, title, tags, viewsCount, commentsOfThisPost, children}) => {
+    return <div className={styles.wrapper}>
+        <Link style={{display: "inline-block"}} to={`/user-info/${user._id}`}>
+            <UserInfo {...user} additionalText={createdAt}/>
+        </Link>
+        <div className={styles.indention}>
+            <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
+                {title}
+            </h2>
+            <ul className={styles.tags}>
+                {tags.map(name => (
+                    <li key={name}>
+                        <Link to={`/tag/${name}`}>#{name}</Link>
                     </li>
-                    <li>
-                        <CommentIcon/>
-                        <span>{commentsOfThisPost.length}</span>
-                    </li>
-                </ul>
-            </div>
+                ))}
+            </ul>
+            {children && <div className={styles.content}>{children}</div>}
+            <ul className={styles.postDetails}>
+                <li>
+                    <EyeIcon/>
+                    <span>{viewsCount}</span>
+                </li>
+                <li>
+                    <CommentIcon/>
+                    <span>{commentsOfThisPost.length}</span>
+                </li>
+            </ul>
         </div>
     </div>
 }
