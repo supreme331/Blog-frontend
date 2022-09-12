@@ -13,10 +13,11 @@ a {
   margin-bottom: 15px;
   position: relative;
   box-shadow: 4px 4px 10px #818080;
+  transition: all 0.3s ease;
 
   &:hover {
     box-shadow: 4px 4px 15px #818080;
-    transition: all 0.15s ease;
+    transition: all 0.3s ease;
     transform: scale(101%);
 
     .editButtons {
@@ -42,7 +43,6 @@ a {
   object-fit: cover;
 
   &Full {
-    min-height: 300px;
     height: 100%;
   }
 }
@@ -54,9 +54,18 @@ a {
 .content {
   margin: 30px 0 50px;
 
+  a {
+    color: #0326cb;
+    transition: all 0.3s ease;
+  }
+  a:hover {
+    color: #4d6cff;
+    transition: all 0.3s ease;
+  }
+
   p {
-    font-size: 22px;
-    line-height: 36px;
+    font-size: 16px;
+    line-height: 24px;
   }
 }
 
@@ -64,15 +73,19 @@ a {
   padding-left: 40px;
 }
 
+.titleMobile {
+  max-width: 77%;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
 .title {
-  font-size: 28px;
-  margin: 0;
+  max-width: 90%;
+  font-size: 22px;
+  margin: 10px 0;
   font-weight: 700;
   color: #000;
-
-  &Full {
-    font-size: 32px;
-  }
 }
 
 .tags {
@@ -156,17 +169,11 @@ a {
   background-color: rgba(255, 255, 255, 1);
   border-radius: 10px;
   opacity: 0;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
-.editComments {
+.editButtonsMobile {
   @extend .editButtons;
-  display: none;
   opacity: 1;
-}
-
-.commentItems:hover {
-  .editComments {
-    display: block;
-  }
+  z-index: 1;
 }

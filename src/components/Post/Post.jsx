@@ -13,12 +13,13 @@ import {fetchRemovePost} from "../../redux/slices/posts"
 
 export const Post = ({
                          _id, title, isFullPost, isEditable, imageUrl, tags, children, viewsCount,
-                         isLoading, user, createdAt
+                         isLoading, user, createdAt, searchRequestCallBack = () => {}
                      }) => {
 
     const dispatch = useDispatch()
     const commentsItems = useSelector(state => state.comments.items)
     const commentsOfThisPost = commentsItems.filter((item) => item.postId === _id)
+    const isMobile = useSelector(state => state.auth.isMobile)
 
     if (isLoading) {
         return <PostSkeleton/>
@@ -33,7 +34,7 @@ export const Post = ({
     return <div className={clsx(styles.root, {[styles.rootFull]: isFullPost})}>
         {
             isEditable && (
-                <div className={styles.editButtons}>
+                <div className={isMobile ? styles.editButtonsMobile : styles.editButtons}>
                     <Link to={`/posts/${_id}/edit`}>
                         <IconButton color="primary">
                             <EditIcon/>
@@ -45,13 +46,6 @@ export const Post = ({
                 </div>
             )}
         {
-            imageUrl && !isFullPost
-                ? (<Link to={`/posts/${_id}`}>
-                    <img className={clsx(styles.image, {[styles.imageFull]: isFullPost})} src={imageUrl} alt={title}/>
-                </Link>)
-                : (<img className={clsx(styles.image, {[styles.imageFull]: isFullPost})} src={imageUrl} alt={title}/>)
-        }
-        {
             isFullPost
                 ? <PostData
                     user={user}
@@ -61,7 +55,9 @@ export const Post = ({
                     title={title}
                     commentsOfThisPost={commentsOfThisPost}
                     viewsCount={viewsCount}
-                    children={children}/>
+                    children={children}
+                    searchRequestCallBack={searchRequestCallBack}
+                    isMobile={isMobile}/>
                 : <Link to={`/posts/${_id}`}>
                     <PostData
                         user={user}
@@ -71,25 +67,36 @@ export const Post = ({
                         title={title}
                         commentsOfThisPost={commentsOfThisPost}
                         viewsCount={viewsCount}
-                        children={children}/>
+                        children={children}
+                        searchRequestCallBack={searchRequestCallBack}
+                        isMobile={isMobile}/>
                 </Link>
         }
+        {
+            imageUrl && !isFullPost
+                ? (<Link to={`/posts/${_id}`}>
+                    <img className={clsx(styles.image, {[styles.imageFull]: isFullPost})} src={imageUrl} alt={title}/>
+                </Link>)
+                : (<img className={clsx(styles.image, {[styles.imageFull]: isFullPost})} src={imageUrl} alt={title}/>)
+        }
+
     </div>
 }
 
-const PostData = ({user, createdAt, isFullPost, title, tags, viewsCount, commentsOfThisPost, children}) => {
+const PostData = ({user, createdAt, isMobile, title, tags, viewsCount,
+                      commentsOfThisPost, children, searchRequestCallBack}) => {
     return <div className={styles.wrapper}>
-        <Link style={{display: "inline-block"}} to={`/user-info/${user._id}`}>
-            <UserInfo {...user} additionalText={createdAt}/>
-        </Link>
-        <div className={styles.indention}>
-            <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
+
+            <h2 className={isMobile ? styles.titleMobile : styles.title}>
                 {title}
             </h2>
+            <Link style={{display: "inline-block"}} to={`/user-info/${user._id}`}>
+                <UserInfo {...user} additionalText={createdAt}/>
+            </Link>
             <ul className={styles.tags}>
                 {tags.map(name => (
                     <li key={name}>
-                        <Link to={`/tag/${name}`}>#{name}</Link>
+                        <Link onClick={() => {searchRequestCallBack()}} to={`/tag/${name}`}>#{name}</Link>
                     </li>
                 ))}
             </ul>
@@ -104,6 +111,5 @@ const PostData = ({user, createdAt, isFullPost, title, tags, viewsCount, comment
                     <span>{commentsOfThisPost.length}</span>
                 </li>
             </ul>
-        </div>
     </div>
 }

@@ -6,7 +6,7 @@
 
 .title {
   input {
-    font-size: 42px;
+    font-size: 22px;
     font-weight: 900;
   }
 
@@ -44,7 +44,8 @@
 }
 
 .buttons {
-  display: flex;  button {
+  display: flex;
+  button {
     margin-right: 15px;
   }
 }
@@ -55,6 +56,6 @@
   flex-direction: column;
   max-width: 500px;
   Button {
-    max-width: 50%;
+    max-width: 170px;
   }
 }

@@ -7,7 +7,6 @@ import {Navigate} from "react-router-dom"
 import {useState} from "react"
 import {onTestSubmit} from "../Login/Login"
 
-
 export const Registration = () => {
 
     const isAuth = useSelector(selectIsAuth)

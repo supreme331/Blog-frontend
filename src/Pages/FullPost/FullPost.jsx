@@ -1,5 +1,5 @@
 import {Post} from "../../components/Post/Post"
-import {CommentsBlock} from "../../components/CommentsBlock"
+import {CommentsBlock} from "../../components/CommentsBlock/CommentsBlock"
 import {AddComment} from "../../components/AddComment/AddComment"
 import {useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
@@ -16,6 +16,7 @@ export const FullPost = () => {
 
     const isAuth = useSelector(selectIsAuth)
     const authData = useSelector(state => state.auth.data)
+    const isMobile = useSelector(state => state.auth.isMobile)
     const {tags} = useSelector(state => state.posts)
     const tagsItems = Array.from(new Set(tags.items))
     const isTagsLoading = tags.status === 'loading'
@@ -40,7 +41,34 @@ export const FullPost = () => {
         return <Post isLoading={isLoading}/>
     }
 
-    return <Grid className={styles.root} container spacing={6}>
+    return isMobile ? <div className={styles.root}>
+            <Post
+                _id={data._id}
+                title={data.title}
+                // imageUrl={data.imageUrl ? `${process.env.REACT_APP_API_URL || "http://localhost:4444"}${data.imageUrl}` : ''}
+                imageUrl={data.imageUrl ? data.imageUrl : ''}
+                user={data && data.user}
+                createdAt={(new Date(data.createdAt)).toUTCString()}
+                viewsCount={data.viewsCount}
+                tags={data.tags}
+                isFullPost
+                isEditable={authData?._id === data?.user._id}
+            >
+                {data && <ReactMarkdown children={data.text}/>}
+            </Post>
+            {data && (
+                <CommentsBlock
+                    isAuth={isAuth}
+                    items={commentsOfThisPost}
+                    users={users}
+                    isLoading={isLoading}
+                    title={'Комментарии'}
+                >
+                    {isAuth && <AddComment postId={id}/>}
+                </CommentsBlock>
+            )}
+        </div>
+        : <Grid className={styles.root} container spacing={6}>
         <Grid xs={8} item>
             <Post
                 _id={data._id}
@@ -58,6 +86,7 @@ export const FullPost = () => {
             </Post>
             {data && (
                 <CommentsBlock
+                    isAuth={isAuth}
                     items={commentsOfThisPost}
                     users={users}
                     isLoading={isLoading}

@@ -1,18 +1,12 @@
 import {useDispatch, useSelector} from "react-redux"
-import {
-    Button,
-    CircularProgress,
-    Container,
-    Grid,
-    TextField,
-    Typography
-} from "@mui/material"
+import {Button, Container, Grid, TextField, Typography} from "@mui/material"
 import {useForm} from "react-hook-form"
 import styles from "./UserPage.module.scss"
 import axios from "../../axios"
 import {useEffect, useState} from "react"
 import {setUserInfoId} from "../../redux/slices/users"
 import noAvatar from "../../img/noAvatar.PNG"
+import {Preloader} from "../../components/Preloader/Preloader";
 
 export const UserPage = () => {
 
@@ -73,7 +67,7 @@ export const UserPage = () => {
         }
     }
 
-    return user ? (<Container className={styles.root}>
+    return user ? <Container className={styles.root}>
         {isOwner ? (<Grid container spacing={4}>
             <Grid xs={4} item rowSpacing={4}>
                 <img alt={user?.fullName}
@@ -172,5 +166,5 @@ export const UserPage = () => {
                 </Grid>
             </Grid>
         )}
-    </Container>) : (<CircularProgress/>)
+    </Container> : <Preloader/>
 }

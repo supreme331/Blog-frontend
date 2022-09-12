@@ -11,7 +11,7 @@ import {useForm} from "react-hook-form"
 import * as queryString from "query-string"
 import styles from "./SearchBlock.module.scss"
 
-export const SearchBlock = () => {
+export const SearchBlock = ({isMobile}) => {
 
     const {register, handleSubmit} = useForm({
         defaultValues: {
@@ -30,7 +30,7 @@ export const SearchBlock = () => {
         })
     }
 
-    return <SideBlock title="Найти статью">
+    return <SideBlock title="Найти статью" isMobile={isMobile}>
         <form className={styles.searchForm} onSubmit={handleSubmit(onSubmit)}>
             <FormControl>
                 <TextField

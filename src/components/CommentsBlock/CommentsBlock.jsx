@@ -1,7 +1,7 @@
 import React, {useRef, useState} from "react"
-import {SideBlock} from "./SideBlock/SideBlock"
+import {SideBlock} from "../SideBlock/SideBlock"
 import {
-    Avatar,
+    Avatar, Box,
     Button,
     Divider,
     IconButton,
@@ -10,19 +10,21 @@ import {
     ListItemAvatar,
     ListItemText,
     Skeleton,
-    TextField
+    TextField, Tooltip, Typography
 } from "@mui/material"
 import {Link} from "react-router-dom"
-import axios from "../axios"
+import axios from "../../axios"
 import {useDispatch, useSelector} from "react-redux"
-import styles from "./Post/Post.module.scss"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Clear"
-import {fetchComments, fetchRemoveComment} from "../redux/slices/comments"
+import {fetchComments, fetchRemoveComment} from "../../redux/slices/comments"
+import styles from "./CommentsBlock.module.scss"
 
-export const CommentsBlock = ({items, users, children, isLoading = true, title}) => {
+export const CommentsBlock = ({fromHome = false, isAuth, items, users,
+                                  children, isLoading = true, title}) => {
 
     const userData = useSelector(state => state.auth.data)
+    const isMobile = useSelector(state => state.auth.isMobile)
     const dispatch = useDispatch()
 
     const onRemove = (_id) => {
@@ -33,16 +35,23 @@ export const CommentsBlock = ({items, users, children, isLoading = true, title})
     }
 
     return <SideBlock title={title}>
+        {!isAuth && !fromHome ? <Box className={styles.infoMessage}><Typography component="span">
+            Авторизуйтесь чтобы написать комментарий
+        </Typography></Box> : null}
         <List>
             {(isLoading ? [...Array(5)] : items).map((obj, index) => {
                 let user = users.find(user => user._id === obj.user)
-                return <Comment isLoading={isLoading}
-                                user={user}
-                                item={obj}
-                                index={index}
-                                onRemove={onRemove}
-                                isEditable={userData?._id === user?._id}
-                                title={title}
+
+                return <Comment
+                    key={index}
+                    fromHome={fromHome}
+                    isMobile={isMobile}
+                    isLoading={isLoading}
+                    user={user}
+                    item={obj}
+                    index={index}
+                    onRemove={onRemove}
+                    isEditable={userData?._id === user?._id}
                 />
             })}
         </List>
@@ -50,7 +59,7 @@ export const CommentsBlock = ({items, users, children, isLoading = true, title})
     </SideBlock>
 }
 
-const Comment = ({isLoading, user, item, index, onRemove, isEditable, title}) => {
+const Comment = ({fromHome, isMobile, isLoading, user, item, onRemove, isEditable}) => {
 
     const commentEditFormRef = useRef(null)
     const commentEditBtnsRef = useRef(null)
@@ -77,20 +86,21 @@ const Comment = ({isLoading, user, item, index, onRemove, isEditable, title}) =>
         commentEditFormRef.current.style.display = 'none'
     }
 
-    return <React.Fragment key={index}>
+    return <React.Fragment>
         <ListItem className={styles.commentItems} alingItems="flex-start">
-            {isEditable && (<div ref={commentEditBtnsRef} className={styles.editComments}>
-                <IconButton onClick={() => {
-                    onEdit()
-                }} color="primary">
-                    <EditIcon/>
-                </IconButton>
-                <IconButton onClick={() => {
-                    onRemove(item._id)
-                }} color="secondary">
-                    <DeleteIcon/>
-                </IconButton>
-            </div>)}
+            {isEditable && (
+                <div ref={commentEditBtnsRef} className={isMobile ? styles.editCommentsMobile : styles.editComments}>
+                    <IconButton onClick={() => {
+                        onEdit()
+                    }} color="primary">
+                        <EditIcon/>
+                    </IconButton>
+                    <IconButton onClick={() => {
+                        onRemove(item._id)
+                    }} color="secondary">
+                        <DeleteIcon/>
+                    </IconButton>
+                </div>)}
             <ListItemAvatar>
                 {isLoading ? (
                     <Skeleton variant="circular" width={40} height={40}/>
@@ -108,9 +118,9 @@ const Comment = ({isLoading, user, item, index, onRemove, isEditable, title}) =>
             ) : (
                 <div>
                     {
-                        title === 'Последнии комментарии' ? (<Link to={`/posts/${item.postId}`}>
+                        fromHome ? (<Tooltip title="К статье"><Link to={`/posts/${item.postId}`}>
                             <ListItemText style={{color: "#343434"}} primary={user?.fullName} secondary={item?.text}/>
-                        </Link>) : (<ListItemText primary={user?.fullName} secondary={item?.text}/>)
+                        </Link></Tooltip>) : (<ListItemText primary={user?.fullName} secondary={item?.text}/>)
                     }
                     <div ref={commentEditFormRef} style={{display: 'none'}}>
                         <TextField

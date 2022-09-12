@@ -3,8 +3,8 @@ import {Link} from "react-router-dom"
 import {SideBlock} from "../SideBlock/SideBlock"
 import styles from "../TagsBlock/Tags.module.scss"
 
-export const TagsBlock = ({items, isLoading = true, searchRequestCallBack}) => {
-    return <SideBlock title="Тэги">
+export const TagsBlock = ({isMobile, items, isLoading = true, searchRequestCallBack}) => {
+    return <SideBlock title="Тэги" isMobile={isMobile}>
         <List className={styles.tagsBlock}>
             {(isLoading ? [...Array(5)] : items).map((name, index) => {
                 return (

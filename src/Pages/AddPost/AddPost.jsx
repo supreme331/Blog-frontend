@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {selectIsAuth} from "../../redux/slices/auth"
 import 'easymde/dist/easymde.min.css'
 import axios from '../../axios'
-import {initializationApp} from "../../App";
+import {initializationApp} from "../../App"
 
 export const AddPost = () => {
     const {id} = useParams()

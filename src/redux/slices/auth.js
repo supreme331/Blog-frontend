@@ -16,7 +16,8 @@ export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async (params) =
 
 const initialState = {
     data: null,
-    status: 'loading'
+    status: 'loading',
+    isMobile: false
 }
 
 const authSlice = createSlice({
@@ -25,6 +26,9 @@ const authSlice = createSlice({
     reducers: {
         logout: (state) => {
             state.data = null
+        },
+        setDevice: (state, action) => {
+            state.isMobile = action.payload.isMobile
         }
     },
     extraReducers: {
@@ -69,4 +73,4 @@ const authSlice = createSlice({
 
 export const selectIsAuth = (state) => Boolean(state.auth.data)
 export const authReducer = authSlice.reducer
-export const {logout} = authSlice.actions
+export const {logout, setDevice} = authSlice.actions

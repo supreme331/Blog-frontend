@@ -1,5 +1,5 @@
 import styles from './UserInfo.module.scss'
-import {Avatar} from "@mui/material";
+import {Avatar} from "@mui/material"
 
 export const UserInfo = ({avatarUrl, fullName, additionalText}) => {
     return <div className={styles.root}>
