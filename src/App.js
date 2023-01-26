@@ -17,12 +17,14 @@ import {fetchPosts, fetchTags} from "./redux/slices/posts"
 import {isMobile} from 'react-device-detect'
 
 export const initializationApp = async (dispatch) => {
-    await dispatch(setDevice({isMobile: isMobile}))
-    await dispatch(fetchAuthMe())
-    await dispatch(fetchUsers())
-    await dispatch(fetchComments())
-    await dispatch(fetchPosts())
-    await dispatch(fetchTags())
+     dispatch(setDevice({isMobile: isMobile}))
+     if (window.localStorage.getItem('token')) {
+         dispatch(fetchAuthMe())
+     }
+     dispatch(fetchUsers())
+     dispatch(fetchComments())
+     dispatch(fetchPosts())
+     dispatch(fetchTags())
 }
 
 function App() {
@@ -33,7 +35,6 @@ function App() {
     useEffect(() => {
         setIsInit(false)
         initializationApp(dispatch).then(() => setIsInit(true))
-        console.log('isMobile', isMobile)
     }, [])
 
     return <>
